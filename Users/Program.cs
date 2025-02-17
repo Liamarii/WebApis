@@ -1,31 +1,27 @@
-using Microsoft.AspNetCore.Builder;
-using Scalar.AspNetCore;
+using Users.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
-
-builder.Services.AddOpenApi();
-
-var app = builder.Build();
-
-
-app.UseHttpsRedirection();
-
-if (app.Environment.IsDevelopment())
+internal class Program
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference(x =>
+    private static void Main(string[] args)
     {
-        x.WithTitle("Users Api");
-        x.WithTheme(ScalarTheme.BluePlanet);
-        x.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.Http);
-    });
+        var builder = WebApplication.CreateBuilder(args);
+        var services = builder.Services;
+        services.AddScalar();
+        services.AddControllers();
+
+        var app = builder.Build();
+
+        app.UseHttpsRedirection();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseScalar();
+        }
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
 }
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
