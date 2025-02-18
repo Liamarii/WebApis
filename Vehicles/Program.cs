@@ -2,6 +2,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMediatR(x =>
+{
+    x.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
 
 builder.Services.AddControllers();
 
