@@ -31,7 +31,7 @@ namespace VehiclesTests.GetVehicles
         public void TheResponseContentIsNotNull() => Assert.That(_responseContent, Is.Not.Null);
 
         [Test]
-        public void TheResponseOnlyContainsVehicles() => Assert.That(_responseContent?.Vehicles, Is.Not.Empty);
+        public void TheResponseContainsVehicles() => Assert.That(_responseContent?.Vehicles, Is.Not.Empty);
 
         [Test]
         public void TheResponseOnlyContainsVehiclesOfTheExpectedMake() => Assert.That(_responseContent?.Vehicles.All(x => x.Make == make), Is.True);
