@@ -1,36 +1,35 @@
-namespace Vehicles
+namespace Vehicles;
+
+public class Program
 {
-    public class Program
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddMediatR(x =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            x.RegisterServicesFromAssembly(typeof(Program).Assembly);
+        });
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddMediatR(x =>
-            {
-                x.RegisterServicesFromAssembly(typeof(Program).Assembly);
-            });
+        builder.Services.AddControllers();
 
-            builder.Services.AddControllers();
-
-            var app = builder.Build();
+        var app = builder.Build();
 
 
-            app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(x => x.EnableTryItOutByDefault());
-            }
-
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.Run();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(x => x.EnableTryItOutByDefault());
         }
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
     }
 }

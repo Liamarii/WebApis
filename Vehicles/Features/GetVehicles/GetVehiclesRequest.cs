@@ -1,9 +1,8 @@
 ﻿using MediatR;
 
-namespace Vehicles.Features.GetVehicles
+namespace Vehicles.Features.GetVehicles;
+
+public class GetVehiclesRequest : IRequest<GetVehiclesResponse>
 {
-    public class GetVehiclesRequest : IRequest<GetVehiclesResponse>
-    {
-        public required string Make { get; set; }
-    }
+    public required string Make { get; set; }
 }
