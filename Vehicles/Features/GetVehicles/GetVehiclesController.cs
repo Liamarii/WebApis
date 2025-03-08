@@ -10,7 +10,7 @@ namespace Vehicles.Features.GetVehicles
     {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-        public async Task<ActionResult<GetVehiclesResponse>> GetAsync([FromQuery, Required] GetVehiclesRequest getVehiclesRequest, IMediator mediator)
+        public async Task<ActionResult<GetVehiclesResponse>> GetVehicle([FromBody, Required] GetVehiclesRequest getVehiclesRequest, IMediator mediator)
         {
             return await mediator.Send(getVehiclesRequest);
         }
