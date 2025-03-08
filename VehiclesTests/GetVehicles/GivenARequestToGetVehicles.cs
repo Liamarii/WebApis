@@ -34,6 +34,6 @@ namespace VehiclesTests.GetVehicles
         public void TheResponseOnlyContainsVehicles() => Assert.That(_responseContent?.Vehicles, Is.Not.Empty);
 
         [Test]
-        public void TheResponseOnlyContainsVehiclesOfTheExpectedType() => Assert.That(_responseContent?.Vehicles.All(x => x.Make == make), Is.True);
+        public void TheResponseOnlyContainsVehiclesOfTheExpectedMake() => Assert.That(_responseContent?.Vehicles.All(x => x.Make == make), Is.True);
     }
 }
