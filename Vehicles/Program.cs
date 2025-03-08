@@ -1,27 +1,36 @@
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(x =>
+namespace Vehicles
 {
-    x.RegisterServicesFromAssembly(typeof(Program).Assembly);
-});
+    public class Program
+    {
+        private static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddMediatR(x =>
+            {
+                x.RegisterServicesFromAssembly(typeof(Program).Assembly);
+            });
 
-var app = builder.Build();
+            builder.Services.AddControllers();
+
+            var app = builder.Build();
 
 
-app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(x => x.EnableTryItOutByDefault());
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(x => x.EnableTryItOutByDefault());
+            }
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
 }
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
