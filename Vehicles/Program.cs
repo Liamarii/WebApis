@@ -1,3 +1,5 @@
+using Vehicles.Data;
+
 namespace Vehicles;
 
 public class Program
@@ -14,6 +16,7 @@ public class Program
         });
 
         builder.Services.AddControllers();
+        builder.Services.AddSingleton<IVehiclesRepositoryStub, VehiclesRepositoryStub>();
 
         var app = builder.Build();
 

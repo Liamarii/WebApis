@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Vehicles.Features.GetVehicles;
+namespace Vehicles.Models;
 
 public readonly struct Vehicle(string make, string model)
 {

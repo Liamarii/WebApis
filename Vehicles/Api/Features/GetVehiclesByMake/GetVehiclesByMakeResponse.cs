@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using Vehicles.Models;
 
-namespace Vehicles.Features.GetVehicles;
+namespace Vehicles.Api.Features.GetVehiclesByMake;
 
-public class GetVehiclesResponse
+public class GetVehiclesByMakeResponse
 {
     [JsonPropertyName("vehicles")]
     public required IEnumerable<Vehicle> Vehicles { get; set; }
