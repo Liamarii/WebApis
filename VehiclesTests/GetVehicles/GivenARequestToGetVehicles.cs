@@ -10,13 +10,14 @@ namespace VehiclesTests.GetVehicles;
 [TestFixture("Volvo")]
 [TestFixture("Hyundai")]
 [TestFixture("Toyota")]
+[Parallelizable]
 public class VehicleTests(string make) : WebApplicationFactory<Vehicles.Program>
 {
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
     private GetVehiclesByMakeResponse? _responseContent;
 
-    [SetUp]
+    [OneTimeSetUp]
     public async Task Setup()
     {
         _request = new GetVehiclesByMakeRequest() { Make = make };
