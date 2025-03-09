@@ -2,7 +2,7 @@
 
 namespace Vehicles.Models;
 
-public readonly struct Vehicle(string make, string model)
+public class Vehicle(string make, string model)
 {
     [JsonPropertyName("make")]
     public string Make { get; init; } = make;
