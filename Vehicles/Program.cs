@@ -16,7 +16,7 @@ public class Program
         });
 
         builder.Services.AddControllers();
-        builder.Services.AddSingleton<IVehiclesRepositoryStub, VehiclesRepositoryStub>();
+        builder.Services.AddSingleton<IVehiclesRepository, VehiclesRepository>();
 
         var app = builder.Build();
 

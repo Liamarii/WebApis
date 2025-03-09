@@ -4,11 +4,11 @@ using Vehicles.Models;
 
 namespace Vehicles.Api.Features.GetVehiclesByMake;
 
-public class GetVehiclesByMakeHandler(IVehiclesRepositoryStub vehiclesRepositoryStub) : IRequestHandler<GetVehiclesByMakeRequest, GetVehiclesByMakeResponse>
+public class GetVehiclesByMakeHandler(IVehiclesRepository vehiclesRepositoryStub) : IRequestHandler<GetVehiclesByMakeRequest, GetVehiclesByMakeResponse>
 {
     public async Task<GetVehiclesByMakeResponse> Handle(GetVehiclesByMakeRequest getVehiclesRequest, CancellationToken cancellationToken)
     {
-        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicleDataAsync();
+        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicles();
 
         return new()
         {

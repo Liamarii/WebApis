@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using NUnit.Framework;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features.GetVehiclesByMake;
 
-namespace VehiclesTests.GetVehicles;
+namespace VehiclesTests.Integration.GetVehiclesTests;
 
 [TestFixture("Volvo")]
 [TestFixture("Hyundai")]
