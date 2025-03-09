@@ -8,6 +8,7 @@ internal class Program
         var services = builder.Services;
         services.AddScalar();
         services.AddControllers();
+        services.AddServices();
 
         var app = builder.Build();
 
