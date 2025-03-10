@@ -1,6 +1,9 @@
 @Users_HostAddress = http://localhost:5081
 
-GET {{Users_HostAddress}}/Users/
+POST {{Users_HostAddress}}/Users
+Content-Type: application/json
 Accept: application/json
 
-###
+{
+  "name": "Volvo"
+}
