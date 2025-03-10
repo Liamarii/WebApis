@@ -1,18 +1,18 @@
-Done:
-~~Create Vehicle APIs~~
-~~Create Users APIs~~
-~~Add dummy data in Vehicle API~~
-~~Add a test project to either~~
-~~Add integration tests~~
-~~Add unit tests with snapshot testing~~
-~~Use http service clients~~
-~~Add MediatR~~
-~~Connect the Apis together in some way~~
-~~Setup swagger on one api~~
-~~Setup scalar on one api~~
-~~Add a single logger instance example~~
+Done:  
+- Create Vehicle APIs  
+- Create Users APIs  
+- Add dummy data in Vehicle API  
+- Add a test project to either  
+- Add integration tests  
+- Add unit tests with snapshot testing  
+- Use http service clients  
+- Add MediatR  
+- Connect the Apis together in some way  
+- Setup swagger on one api  
+- Setup scalar on one api  
+- Add a single logger instance example  
 
-Ideas to do next:
+Ideas:  
 - Add scoped logging on the other service.
 - Get some significant and or slow to process data
 - Protobuf the data requesting of of service A to B.
