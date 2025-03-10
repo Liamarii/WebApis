@@ -15,8 +15,13 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="protobuf-net" Version="3.2.46" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Protobuf\" />
   </ItemGroup>
 
 </Project>

@@ -19,9 +19,9 @@ public class VehiclesRepository : IVehiclesRepository
         await Task.Delay(TimeSpan.FromSeconds(3));
 
         return [
-        new Vehicle("Hyundai", "Zebra"),
-        new Vehicle("Volvo", "Skunk"),
-        new Vehicle("Kia", "Chimp"),
-        new Vehicle("Toyota", "Ape")];
+        new Vehicle(){ Make = "Hyundai", Model = "Zebra"},
+        new Vehicle() { Make = "Volvo", Model = "Skunk" },
+        new Vehicle() { Make = "Kia", Model = "Chimp" },
+        new Vehicle() { Make = "Toyota", Model = "Ape" }];
     }
 }

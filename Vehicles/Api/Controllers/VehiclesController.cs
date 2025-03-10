@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Vehicles.Api.Features;
 using Vehicles.Api.Features.GetVehicles;
 using Vehicles.Api.Features.GetVehiclesByMake;
 
@@ -18,9 +19,14 @@ public class VehiclesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("GetVehiclesByMake")]
+    [Produces("application/json", "application/x-protobuf")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-    public async Task<ActionResult<GetVehiclesByMakeResponse>> GetVehiclesByMake([FromBody, Required] GetVehiclesByMakeRequest getVehiclesByMakeRequest)
+    public async Task<ActionResult> GetVehiclesByMake([FromBody, Required] GetVehiclesByMakeRequest getVehiclesByMakeRequest, [FromHeader] string accept = "application/json")
     {
-        return await mediator.Send(getVehiclesByMakeRequest);
+        GetVehiclesByMakeResponse response = await mediator.Send(getVehiclesByMakeRequest);
+
+        return accept == "application/x-protobuf" ? 
+            File(ProtobufHelper.SerialiseToProtobuf(response), "application/x-protobuf") : 
+            Ok(response);
     }
 }
