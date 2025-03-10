@@ -10,7 +10,10 @@ Done:
 - Connect the Apis together in some way  
 - Setup swagger on one api  
 - Setup scalar on one api  
-- Add a single logger instance example  
+- Add a single logger instance example 
+- The Vehicle service can return data in protobuf.
+- Supporting tests to confirm protobuf works.
+- Generic methods to serialize and deserialize protobuf files easily.
 
 Ideas:  
 - Add scoped logging on the other service.
@@ -26,3 +29,4 @@ Ideas:
 - Add some Selenium tests
 - Add some Playwright tests
 - Add some Hurl tests.
+- Get the accept header with middleware?
