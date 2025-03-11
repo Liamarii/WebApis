@@ -1,6 +1,6 @@
 ﻿using Vehicles.Data;
 
-namespace VehiclesTests.Unit.VehiclesRepositoryTests
+namespace VehiclesTests.Unit.Data.VehiclesRepositoryTests
 {
     [Parallelizable]
     public class WhenGettingVehicles
