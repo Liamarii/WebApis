@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features;
 using Vehicles.Api.Features.GetVehiclesByMake;
+using System.Net.Http.Headers;
 
 namespace VehiclesTests.Integration.GetVehiclesTests;
 
@@ -21,7 +22,7 @@ public class GivenARequestToGetVehiclesUsingProtobuf(string make) : WebApplicati
     public async Task Setup()
     {
         HttpClient client = CreateClient();
-        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/x-protobuf"));
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-protobuf"));
 
         _request = new GetVehiclesByMakeRequest() { Make = make };        
         _response = await client.PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
