@@ -16,6 +16,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="NUnit" Version="4.3.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="Selenium.Support" Version="4.29.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.29.0" />
     <PackageReference Include="Testcontainers.MsSql" Version="4.2.0" />
     <PackageReference Include="Verify.NUnit" Version="28.13.0" />
   </ItemGroup>
