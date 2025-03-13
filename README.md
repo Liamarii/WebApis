@@ -14,6 +14,7 @@ Done:
 - The Vehicle service can return data in protobuf.
 - Supporting tests to confirm protobuf works.
 - Generic methods to serialize and deserialize protobuf files easily.
+- Added cancellation tokens to the vehicles controller.
 
 Ideas:  
 - Add scoped logging on the other service.
@@ -29,4 +30,5 @@ Ideas:
 - Add some Selenium tests
 - Add some Playwright tests
 - Add some Hurl tests.
+- Add some middleware.
 - Get the accept header with middleware?
