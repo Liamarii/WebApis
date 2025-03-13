@@ -8,7 +8,7 @@ public class GetVehiclesByMakeHandler(IVehiclesRepository vehiclesRepositoryStub
 {
     public async Task<GetVehiclesByMakeResponse> Handle(GetVehiclesByMakeRequest getVehiclesRequest, CancellationToken cancellationToken)
     {
-        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicles();
+        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicles(cancellationToken);
 
         return new()
         {

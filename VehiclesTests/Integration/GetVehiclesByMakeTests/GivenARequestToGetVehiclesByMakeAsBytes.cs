@@ -4,15 +4,14 @@ using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features;
 using Vehicles.Api.Features.GetVehiclesByMake;
-using System.Net.Http.Headers;
 
-namespace VehiclesTests.Integration.GetVehiclesTests;
+namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 
 [TestFixture("Volvo")]
 [TestFixture("Hyundai")]
 [TestFixture("Toyota")]
 [Parallelizable]
-public class GivenARequestToGetVehiclesUsingProtobuf(string make) : WebApplicationFactory<Vehicles.Program>
+public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : WebApplicationFactory<Vehicles.Program>
 {
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
@@ -21,11 +20,8 @@ public class GivenARequestToGetVehiclesUsingProtobuf(string make) : WebApplicati
     [OneTimeSetUp]
     public async Task Setup()
     {
-        HttpClient client = CreateClient();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-protobuf"));
-
-        _request = new GetVehiclesByMakeRequest() { Make = make };        
-        _response = await client.PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
+        _request = new GetVehiclesByMakeRequest() { Make = make };
+        _response = await CreateClient().PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
         _responseContent = ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await _response.Content.ReadAsByteArrayAsync());
     }
 

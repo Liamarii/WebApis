@@ -11,7 +11,7 @@ namespace VehiclesTests.Unit.Data.VehiclesRepositoryTests
         [Description("This is just showing how the verify package can be used for snapshot testing")]
         public async Task TheExpectedVehicleDataIsReturned()
         {
-            var result = await _sut.GetVehicles();
+            var result = await _sut.GetVehicles(CancellationToken.None);
             await Verify(result);
         }
     }

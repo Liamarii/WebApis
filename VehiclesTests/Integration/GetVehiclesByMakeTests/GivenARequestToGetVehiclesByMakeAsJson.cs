@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features.GetVehiclesByMake;
 
-namespace VehiclesTests.Integration.GetVehiclesTests;
+namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 
 [TestFixture("Volvo")]
 [TestFixture("Hyundai")]
 [TestFixture("Toyota")]
 [Parallelizable]
-public class GivenARequestToGetVehicles(string make) : WebApplicationFactory<Vehicles.Program>
+public class GivenARequestToGetVehiclesByMakeAsJson(string make) : WebApplicationFactory<Vehicles.Program>
 {
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
@@ -19,8 +20,11 @@ public class GivenARequestToGetVehicles(string make) : WebApplicationFactory<Veh
     [OneTimeSetUp]
     public async Task Setup()
     {
+        HttpClient client = CreateClient();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
         _request = new GetVehiclesByMakeRequest() { Make = make };
-        _response = await CreateClient().PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
+        _response = await client.PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"), CancellationToken.None);
         _responseContent = JsonSerializer.Deserialize<GetVehiclesByMakeResponse>(await _response.Content.ReadAsStringAsync());
     }
 

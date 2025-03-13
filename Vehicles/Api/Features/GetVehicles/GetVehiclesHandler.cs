@@ -8,7 +8,7 @@ public class GetVehiclesHandler(IVehiclesRepository vehiclesRepositoryStub) : IR
 {
     public async Task<GetVehiclesResponse> Handle(GetVehiclesRequest getVehiclesRequest, CancellationToken cancellationToken)
     {
-        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicles();
+        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicles(cancellationToken);
 
         return new()
         {
