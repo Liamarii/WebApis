@@ -1,9 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using ProtoBuf;
+using System.Text.Json.Serialization;
 
 namespace Users.Services.Vehicles.Models;
 
-public readonly struct GetVehiclesByMakeResponse
+[ProtoContract]
+public class GetVehiclesByMakeResponse
 {
     [JsonPropertyName("vehicles")]
-    public required IEnumerable<Vehicle> Vehicles { get; init; }
+    [ProtoMember(1)]
+    public required IEnumerable<Vehicle> Vehicles { get; set; }
 }

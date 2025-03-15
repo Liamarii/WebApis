@@ -11,6 +11,7 @@ namespace Users.Controllers;
 public class UsersController(IUsersService usersService) : ControllerBase
 {
     [HttpPost]
+    [EndpointDescription("Uses protobuf rest request")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     public async Task<ActionResult<GetAvailableVehiclesResponse>> GetVehicleByUser([FromBody, Required] GetAvailableVehiclesRequest getVehicleByUserRequest)
     {

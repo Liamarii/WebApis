@@ -17,7 +17,7 @@ public class VehiclesService(HttpClient httpClient) : IVehicleService
     public async Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest request)
     {
         HttpResponseMessage responseMessage = await _httpClient.PostAsync(_url, new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"));
-        string responseMessageContentString = await responseMessage.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<GetVehiclesByMakeResponse>(responseMessageContentString);
+
+        return ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await responseMessage.Content.ReadAsByteArrayAsync());
     }
 }
