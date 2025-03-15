@@ -15,6 +15,9 @@ Done:
 - Supporting tests to confirm protobuf works.
 - Generic methods to serialize and deserialize protobuf files easily.
 - Added cancellation tokens to the vehicles controller.
+- Fake a response with Moq in a test
+- Fake a response with NHibernate in a test.
+- Get a consuming service to take in and deserialise protobuf.
 
 Ideas:  
 - Add scoped logging on the other service.
@@ -32,3 +35,4 @@ Ideas:
 - Add some Hurl tests.
 - Add some middleware.
 - Get the accept header with middleware?
+- Caching with redis / inmemory or maybe dragonfly?
