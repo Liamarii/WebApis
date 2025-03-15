@@ -33,6 +33,9 @@ Ideas:
 - Add some Selenium tests
 - Add some Playwright tests
 - Add some Hurl tests.
-- Add some middleware.
-- Get the accept header with middleware?
 - Caching with redis / inmemory or maybe dragonfly?
+- Config manager
+- Common project
+- Polly retries
+- Error handling middleware
+- Events
