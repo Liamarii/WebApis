@@ -15,11 +15,21 @@ public class UsersController(IUsersService usersService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     public async Task<ActionResult<GetAvailableVehiclesResponse>> GetVehicleByUser([FromBody, Required] GetAvailableVehiclesRequest getVehicleByUserRequest)
     {
-        Logs.Add.InfoLog("This is an info log");
-        Logs.Add.ErrorLog("This is an error log");
+        try
+        {
+            GetAvailableVehiclesResponse response = await usersService.GetAvailableVehicles(getVehicleByUserRequest);
+            return Ok(response);
+        }
+        catch (HttpRequestException ex)
+        {
+            Logs.Add.InfoLog($"External service is unavailable, {ex}");
+            return StatusCode(StatusCodes.Status502BadGateway, "External service is unavailable.");
+        }
 
-        GetAvailableVehiclesResponse response = await usersService.GetAvailableVehicles(getVehicleByUserRequest);
-        
-        return Ok(response);
+        catch (Exception ex)
+        {
+            Logs.Add.ErrorLog($"Unhandled exception {ex}");
+            return StatusCode(500, "An internal server error occurred.");
+        }
     }
 }

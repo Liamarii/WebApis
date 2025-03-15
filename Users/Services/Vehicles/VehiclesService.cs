@@ -18,6 +18,8 @@ public class VehiclesService(HttpClient httpClient) : IVehicleService
     {
         HttpResponseMessage responseMessage = await _httpClient.PostAsync(_url, new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"));
 
+        responseMessage.EnsureSuccessStatusCode();
+
         return ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await responseMessage.Content.ReadAsByteArrayAsync());
     }
 }
