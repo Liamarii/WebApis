@@ -5,10 +5,10 @@ namespace Users.Infrastructure;
 
 public static class Services
 {
+    public const string baseAddress = "https://localhost:7264";
+
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        const string baseAddress = "https://localhost:7264";
-
         services.AddHttpClient<IVehicleService, VehiclesService>(client =>
         {
             client.BaseAddress = new Uri(baseAddress);

@@ -6,9 +6,9 @@ using Users.Services.Users.Models;
 using Users.Services.Vehicles;
 using Users.Services.Vehicles.Models;
 
-namespace UsersTests.ServiceTests
+namespace UsersTests.Unit.Services
 {
-    public class UsersServiceTests
+    public class MoqAndNSubstitute
     {
         public static TheoryData<string, string, string> VehicleTestData => new()
         {
@@ -30,7 +30,7 @@ namespace UsersTests.ServiceTests
             UsersService sut = new(mockVehicleService.Object);
 
             // Act
-            GetAvailableVehiclesResponse response = await sut.GetAvailableVehicles(new(){ Name = name });
+            GetAvailableVehiclesResponse response = await sut.GetAvailableVehicles(new() { Name = name });
 
             // Assert
             Assert.Equal(response.Message, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name)} drives a {make} {model}");
@@ -38,7 +38,7 @@ namespace UsersTests.ServiceTests
 
         [Theory]
         [MemberData(nameof(VehicleTestData))]
-        [InlineData("some","other","data")]
+        [InlineData("some", "other", "data")]
         public async Task PlayingAroundWithNSubstitute(string name, string make, string model)
         {
             // Arrange
