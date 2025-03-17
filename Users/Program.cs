@@ -9,6 +9,7 @@ internal class Program
         services.AddScalar();
         services.AddControllers();
         services.AddServices();
+        services.AddRateLimiting();
 
         var app = builder.Build();
 
@@ -20,9 +21,8 @@ internal class Program
         }
 
         app.UseAuthorization();
-
         app.MapControllers();
-
+        app.UseRateLimiter();
         app.Run();
     }
 }

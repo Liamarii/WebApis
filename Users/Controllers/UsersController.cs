@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.ComponentModel.DataAnnotations;
 using Users.Exceptions;
 using Users.Infrastructure;
@@ -12,8 +13,10 @@ namespace Users.Controllers;
 public class UsersController(IUsersService usersService) : ControllerBase
 {
     [HttpPost]
-    [EndpointDescription("Uses protobuf rest request")]
+    [EnableRateLimiting("SlidingWindowPolicy")]
+    [EndpointDescription("Returns a protocol buffered rest response from Vehicles")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAvailableVehiclesResponse))]
+    [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
     [ProducesResponseType(StatusCodes.Status502BadGateway, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
     public async Task<ActionResult<GetAvailableVehiclesResponse>> GetVehicleByUser([FromBody, Required] GetAvailableVehiclesRequest getVehicleByUserRequest)
