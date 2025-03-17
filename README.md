@@ -18,6 +18,7 @@ Done:
 - Fake a response with Moq in a test
 - Fake a response with NHibernate in a test.
 - Get a consuming service to take in and deserialise protobuf.
+- Added some of the built in rate limiting with a sliding window style policy.
 
 Ideas:  
 - Add scoped logging on the other service.
