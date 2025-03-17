@@ -1,42 +1,60 @@
 Done:  
-- Create Vehicle APIs  
-- Create Users APIs  
-- Add dummy data in Vehicle API  
-- Add a test project to either  
-- Add integration tests  
-- Add unit tests with snapshot testing  
-- Use http service clients  
-- Add MediatR  
-- Connect the Apis together in some way  
-- Setup swagger on one api  
-- Setup scalar on one api  
-- Add a single logger instance example 
-- The Vehicle service can return data in protobuf.
-- Supporting tests to confirm protobuf works.
-- Generic methods to serialize and deserialize protobuf files easily.
-- Added cancellation tokens to the vehicles controller.
-- Fake a response with Moq in a test
-- Fake a response with NHibernate in a test.
-- Get a consuming service to take in and deserialise protobuf.
-- Added some of the built in rate limiting with a sliding window style policy.
+- Use HttpClient services. 
+- Use MediatR
+- Use Swagger UI
+- Use Scalar UI
+- Add a static logger example to get a generic response structure
+- Simplify the program setup with split out infrastructure logic
+- Use features structure
+- Add Integration test examples
+- Add Unit test examples
+- Add Snapshot test examples.
+- Use error handling
+- Use cancellation tokens
+- Use protobuf to deserialise responses when consuming
+- Use protobuf to serialise responses when producing
+- Make the protobuf methods generic
+- Use rate limiting
+- Use XUnit
+- Use NUnit
+- Use Moq
+- Use NSubstitute
+- Add a mock HttpClient with NSubstitute
 
 Ideas:  
-- Add scoped logging on the other service.
-- Get some significant and or slow to process data
-- Protobuf the data requesting of of service A to B.
-- Header propagation
-- Container DB with Postgres SQL or MS SQL
-- Add EF Core.
-- Add Telemetry.
-- Do some none REST messaging examples Rabbit / Webhooks / SOAP
-- Put an angular UI in
-- Add an anti corruption layer.
+- Add a mock HttpClient with Moq
+- Add scoped logging
+- Add header propagation
+- Add Docker containers
+- Add Test containers 
+- Add NHibernate
+- Add EF Core
+- Add Telemetry
+- Add Webhooks
+- Add SOAP requests
+- Add message broker communications
+- Add Polly retries.
+- Add a UI
+    - Add an Angular UI 
+    - Add a Blazor UI
+- Add an anti corruption layer
 - Add some Selenium tests
 - Add some Playwright tests
-- Add some Hurl tests.
-- Caching with redis / inmemory or maybe dragonfly?
-- Config manager
-- Common project
-- Polly retries
-- Error handling middleware
-- Events
+- Add some Hurl tests
+- Add Caching
+    - Add Redis cache
+    - Add In Memory cache
+    - Add Dragonfly cache
+- Add config values
+- Add secret keys
+- Add a shared area
+    - Common project
+    - Shared project
+    - NuGet
+- Add middleware
+- Add Events
+- Add a static analyser with auto fix
+- NHibernate
+- Add circuit breaker
+- Add swagger docs
+- Add Hateoas
