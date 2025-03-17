@@ -24,5 +24,8 @@ public class GetVehicleByUserThrowsException : IAsyncLifetime
     public void ReturnsTheExpectedStatusCode() => Assert.Equal(StatusCodes.Status500InternalServerError, (_response?.Result as ObjectResult)?.StatusCode);
 
     [Fact]
-    public void ReturnsTheExpectedMessage() => Assert.Equal("An internal error occurred while processing your request.", (_response?.Result as ObjectResult)?.Value);
+    public void ReturnsTheExpectedMessage() => Assert.Equal("An internal server error occurred while processing your request.", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Detail);
+
+    [Fact]
+    public void ReturnsTheExpectedTitle() => Assert.Equal("Internal server error", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Title);
 }

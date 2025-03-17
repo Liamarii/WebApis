@@ -25,5 +25,8 @@ public class GetVehicleByUserReturnsUnsuccessfulResponse : IAsyncLifetime
     public void ReturnsTheExpectedStatusCode() => Assert.Equal(StatusCodes.Status502BadGateway, (_response?.Result as ObjectResult)?.StatusCode);
 
     [Fact]
-    public void ReturnsTheExpectedMessage() => Assert.Equal("External service is unavailable.", (_response?.Result as ObjectResult)?.Value);
+    public void ReturnsTheExpectedMessage() => Assert.Equal("External service is unavailable.", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Detail);
+
+    [Fact]
+    public void ReturnsTheExpectedTitle() => Assert.Equal("Bad Gateway", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Title);
 }

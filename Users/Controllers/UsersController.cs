@@ -16,9 +16,9 @@ public class UsersController(IUsersService usersService) : ControllerBase
     [EnableRateLimiting("SlidingWindowPolicy")]
     [EndpointDescription("Returns a protocol buffered rest response from Vehicles")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAvailableVehiclesResponse))]
-    [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-    [ProducesResponseType(StatusCodes.Status502BadGateway, Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status429TooManyRequests, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status502BadGateway, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<ActionResult<GetAvailableVehiclesResponse>> GetVehicleByUser([FromBody, Required] GetAvailableVehiclesRequest getVehicleByUserRequest)
     {
         try
@@ -29,13 +29,22 @@ public class UsersController(IUsersService usersService) : ControllerBase
 
         catch (ServiceUnavailableException)
         {
-            return StatusCode(StatusCodes.Status502BadGateway, "External service is unavailable.");
+            return Problem(
+                statusCode: StatusCodes.Status502BadGateway,
+                title: "Bad Gateway",
+                detail: "External service is unavailable."
+            );
         }
 
         catch (Exception ex)
         {
             Logs.Add.ErrorLog($"Exception surfaced in: {this} method: {nameof(GetVehicleByUser)} of: {ex}");
-            return StatusCode(StatusCodes.Status500InternalServerError, "An internal error occurred while processing your request.");
+            
+            return Problem(
+               statusCode: StatusCodes.Status500InternalServerError,
+               title: "Internal server error",
+               detail: "An internal server error occurred while processing your request."
+           );
         }
     }
 }

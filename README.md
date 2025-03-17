@@ -21,6 +21,7 @@ Done:
 - Use NSubstitute
 - Add a mock HttpClient with NSubstitute
 - Add custom exception and handling
+- Add standardised ProblemDetails error responses (RFC 7807)
 
 Ideas:  
 - Add a mock HttpClient with Moq
