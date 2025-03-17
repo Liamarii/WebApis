@@ -20,6 +20,7 @@ Done:
 - Use Moq
 - Use NSubstitute
 - Add a mock HttpClient with NSubstitute
+- Add custom exception and handling
 
 Ideas:  
 - Add a mock HttpClient with Moq
