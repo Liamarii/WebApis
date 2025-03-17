@@ -60,3 +60,4 @@ Ideas:
 - Add circuit breaker
 - Add swagger docs
 - Add Hateoas
+- Use LINQ
