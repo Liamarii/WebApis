@@ -22,7 +22,7 @@ namespace UsersTests.Integration.Api
 
         private static UsersController CreateUserController(HttpClient httpClient)
         {
-            IVehicleService vehicleService = new VehiclesService(httpClient);
+            IVehicleService vehicleService = new VehiclesService(httpClient, new FaultHandlingPolicies(0));
             IUsersService usersService = new UsersService(vehicleService);
             return new UsersController(usersService);
         }

@@ -10,7 +10,7 @@ internal class Program
         services.AddControllers();
         services.AddServices();
         services.AddRateLimiting();
-
+        services.AddSingleton<IFaultHandlingPolicies>(provider => new FaultHandlingPolicies(3));
         var app = builder.Build();
 
         app.UseHttpsRedirection();
