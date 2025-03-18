@@ -15,7 +15,7 @@ namespace Users.Infrastructure
         private static int _retryCount = 0;
 
         private readonly AsyncRetryPolicy<HttpResponseMessage> _exponentialBackoffRetryPolicy = Policy
-            .Handle<HttpRequestException>()
+            .Handle<HttpRequestException>() //This is just to test it with the service it's calling not turned on.
             .OrResult<HttpResponseMessage>(static x => !x.IsSuccessStatusCode)
             .WaitAndRetryAsync(
                 retryCount: _retryCount,
