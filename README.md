@@ -22,6 +22,7 @@ Done:
 - Add a mock HttpClient with NSubstitute
 - Add custom exception and handling
 - Add standardised ProblemDetails error responses (RFC 7807)
+- Add a Polly retry policy
 
 Ideas:  
 - Add a mock HttpClient with Moq
@@ -35,7 +36,6 @@ Ideas:
 - Add Webhooks
 - Add SOAP requests
 - Add message broker communications
-- Add Polly retries.
 - Add a UI
     - Add an Angular UI 
     - Add a Blazor UI

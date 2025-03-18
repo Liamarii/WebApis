@@ -12,7 +12,7 @@ namespace Users.Infrastructure
     {
         public FaultHandlingPolicies(int retryCount) => _retryCount = retryCount;
 
-        private static int _retryCount = 0;
+        private static int _retryCount = 3;
 
         private readonly AsyncRetryPolicy<HttpResponseMessage> _exponentialBackoffRetryPolicy = Policy
             .Handle<HttpRequestException>() //This is just to test it with the service it's calling not turned on.
