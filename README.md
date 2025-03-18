@@ -1,63 +1,64 @@
-Done:  
-- Use HttpClient services. 
-- Use MediatR
-- Use Swagger UI
-- Use Scalar UI
+# **Done:**
+- Use `HttpClient` services
+- Use `MediatR`
+- Use `Swagger UI`
+- Use `Scalar UI`
 - Add a static logger example to get a generic response structure
-- Simplify the program setup with split out infrastructure logic
-- Use features structure
-- Add Integration test examples
-- Add Unit test examples
-- Add Snapshot test examples.
+- Simplify the program setup with split-out infrastructure logic
+- Use feature structure
+- Add integration test examples
+- Add unit test examples
+- Add snapshot test examples
 - Use error handling
 - Use cancellation tokens
-- Use protobuf to deserialise responses when consuming
-- Use protobuf to serialise responses when producing
-- Make the protobuf methods generic
+- Use `protobuf` to deserialize responses when consuming
+- Use `protobuf` to serialize responses when producing
+- Make the `protobuf` methods generic
 - Use rate limiting
-- Use XUnit
-- Use NUnit
-- Use Moq
-- Use NSubstitute
-- Add a mock HttpClient with NSubstitute
-- Add custom exception and handling
-- Add standardised ProblemDetails error responses (RFC 7807)
-- Add a Polly retry policy
+- Use `XUnit`
+- Use `NUnit`
+- Use `Moq`
+- Use `NSubstitute`
+- Add a mock `HttpClient` with `NSubstitute`
+- Add custom exception handling
+- Add standardized `ProblemDetails` error responses (RFC 7807)
+- Add a `Polly` retry policy
 
-Ideas:  
-- Add a mock HttpClient with Moq
+---
+
+# **Ideas:**
+- Add a mock `HttpClient` with `Moq`
 - Add scoped logging
 - Add header propagation
 - Add Docker containers
-- Add Test containers 
-- Add NHibernate
-- Add EF Core
-- Add Telemetry
-- Add Webhooks
+- Add Test containers
+- Add `NHibernate`
+- Add `EF Core`
+- Add telemetry
+- Add webhooks
 - Add SOAP requests
 - Add message broker communications
-- Add a UI
-    - Add an Angular UI 
-    - Add a Blazor UI
-- Add an anti corruption layer
-- Add some Selenium tests
-- Add some Playwright tests
-- Add some Hurl tests
-- Add Caching
-    - Add Redis cache
-    - Add In Memory cache
-    - Add Dragonfly cache
-- Add config values
+- Add a UI:
+  - Add an `Angular` UI
+  - Add a `Blazor` UI
+- Add an anti-corruption layer
+- Add Selenium tests
+- Add Playwright tests
+- Add Hurl tests
+- Add caching:
+  - Add `Redis` cache
+  - Add In-Memory cache
+  - Add `Dragonfly` cache
+- Add configuration values
 - Add secret keys
-- Add a shared area
-    - Common project
-    - Shared project
-    - NuGet
+- Add a shared area:
+  - Common project
+  - Shared project
+  - NuGet
 - Add middleware
-- Add Events
-- Add a static analyser with auto fix
-- NHibernate
-- Add circuit breaker
-- Add swagger docs
-- Add Hateoas
+- Add events
+- Add a static analyzer with auto-fix
+- Add a circuit breaker
+- Add Swagger docs
+- Add HATEOAS
 - Use LINQ
