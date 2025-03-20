@@ -62,3 +62,10 @@
 - Add Swagger docs
 - Add HATEOAS
 - Use LINQ
+
+---
+
+# **Prerequisites**
+- [Install Docker](https://docs.docker.com/desktop/setup/install/windows-install/)
+- Run in terminal: ```wsl --install``` Windows Subsystem for Linux (WSL) to run a Linux environment on Windows without a virtual machine
+- ```wsl --set-default-version 2``` Use WSL 2 instead of the default 1 as it has improvements.
