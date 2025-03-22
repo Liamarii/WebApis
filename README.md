@@ -22,8 +22,9 @@
 - Add a mock `HttpClient` with `NSubstitute`
 - Add custom exception handling
 - Add standardized `ProblemDetails` error responses (RFC 7807)
-- Add a `Polly` retry policy
-
+- Use `Polly` for fault handling.
+- Use `Resilience Pipeline` for fault handling. 
+- Use `Test Containers` to hold some Postgres test data.
 ---
 
 # **Ideas:**
@@ -69,3 +70,10 @@
 - [Install Docker](https://docs.docker.com/desktop/setup/install/windows-install/)
 - Run in terminal: ```wsl --install``` Windows Subsystem for Linux (WSL) to run a Linux environment on Windows without a virtual machine
 - ```wsl --set-default-version 2``` Use WSL 2 instead of the default 1 as it has improvements.
+- Open Docker Desktop
+- Check both are running ```wsl --list --verbose```
+
+---
+
+# **Notes**
+To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
