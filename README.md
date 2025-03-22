@@ -63,6 +63,7 @@
 - Add Swagger docs
 - Add HATEOAS
 - Use LINQ
+- Add PDF generator
 
 ---
 
