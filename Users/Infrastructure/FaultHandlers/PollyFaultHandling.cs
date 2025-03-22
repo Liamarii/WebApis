@@ -19,7 +19,7 @@ namespace Users.Infrastructure.FaultHandlers
                     return Task.CompletedTask;
                 });
 
-        public async Task<HttpResponseMessage> ExponentialBackoffAsync(Func<CancellationToken, Task<HttpResponseMessage>> input, CancellationToken cancellationToken) // Added CancellationToken parameter
+        public async Task<HttpResponseMessage> ExponentialBackoffAsync(Func<CancellationToken, Task<HttpResponseMessage>> input, CancellationToken cancellationToken)
         {
             try
             {

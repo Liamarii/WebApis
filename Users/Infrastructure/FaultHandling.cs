@@ -4,7 +4,7 @@ namespace Users.Infrastructure;
 
 public interface IFaultHandling
 {
-    Task<HttpResponseMessage> ExponentialBackoffAsync(Func<CancellationToken, Task<HttpResponseMessage>> input, CancellationToken cancellationToken); // Added CancellationToken parameter
+    Task<HttpResponseMessage> ExponentialBackoffAsync(Func<CancellationToken, Task<HttpResponseMessage>> input, CancellationToken cancellationToken);
 }
 
 public static class FaultHandling
