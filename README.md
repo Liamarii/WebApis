@@ -64,6 +64,8 @@
 - Add HATEOAS
 - Use LINQ
 - Add PDF generator
+- Add Authorisation
+- Add Authentication
 
 ---
 
