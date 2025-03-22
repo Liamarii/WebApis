@@ -7,6 +7,12 @@ public interface IFaultHandling
     Task<HttpResponseMessage> ExponentialBackoffAsync(Func<CancellationToken, Task<HttpResponseMessage>> input, CancellationToken cancellationToken);
 }
 
+public enum FaultHandler
+{
+    ResiliencePipelines,
+    PollyRetries
+}
+
 public static class FaultHandling
 {
     public static IServiceCollection AddFaultHandling(this IServiceCollection services, FaultHandler faultHandler)

@@ -1,5 +1,4 @@
 using Users.Infrastructure;
-using Users.Infrastructure.FaultHandlers;
 
 internal class Program
 {
