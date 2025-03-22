@@ -24,13 +24,13 @@ namespace UsersTests.Unit.Services
             // Arrange
             Mock<IVehicleService>? mockVehicleService = new();
             mockVehicleService
-                .Setup(x => x.GetVehiclesByMake(It.IsAny<GetVehiclesByMakeRequest>()))
+                .Setup(x => x.GetVehiclesByMake(It.IsAny<GetVehiclesByMakeRequest>(), CancellationToken.None))
                 .ReturnsAsync(new GetVehiclesByMakeResponse() { Vehicles = [new() { Make = make, Model = model }] });
 
             UsersService sut = new(mockVehicleService.Object);
 
             // Act
-            GetAvailableVehiclesResponse response = await sut.GetAvailableVehicles(new() { Name = name });
+            GetAvailableVehiclesResponse response = await sut.GetAvailableVehicles(new() { Name = name }, CancellationToken.None);
 
             // Assert
             Assert.Equal(response.Message, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name)} drives a {make} {model}");
@@ -43,13 +43,13 @@ namespace UsersTests.Unit.Services
         {
             // Arrange
             IVehicleService mockVehicleService = Substitute.For<IVehicleService>();
-            mockVehicleService.GetVehiclesByMake(Arg.Any<GetVehiclesByMakeRequest>())
+            mockVehicleService.GetVehiclesByMake(Arg.Any<GetVehiclesByMakeRequest>(), CancellationToken.None)
                 .Returns(new GetVehiclesByMakeResponse() { Vehicles = [new() { Make = make, Model = model }] });
 
             UsersService sut = new(mockVehicleService);
 
             // Act
-            GetAvailableVehiclesResponse response = await sut.GetAvailableVehicles(new() { Name = name });
+            GetAvailableVehiclesResponse response = await sut.GetAvailableVehicles(new() { Name = name }, CancellationToken.None);
 
             // Assert
             Assert.Equal(response.Message, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name)} drives a {make} {model}");

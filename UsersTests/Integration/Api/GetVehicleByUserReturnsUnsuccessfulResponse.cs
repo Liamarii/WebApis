@@ -1,19 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Users.Controllers;
+using Users.Exceptions;
+using Users.Services.Users;
 using Users.Services.Users.Models;
 
 namespace UsersTests.Integration.Api;
 
-public class GetVehicleByUserReturnsUnsuccessfulResponse : IAsyncLifetime
+public class GetVehicleByUserReturnsUnsuccessfulResponse(TestHelper testHelper) : IClassFixture<TestHelper>, IAsyncLifetime
 {
-    private readonly TestHelper _testHelper = new();
+    private readonly TestHelper _testHelper = testHelper;
     private ActionResult<GetAvailableVehiclesResponse>? _response;
 
     public async Task InitializeAsync()
     {
-        _testHelper.UseFakeHttpClient("Does not matter", HttpStatusCode.BadRequest);
-        _response = await _testHelper.UsersController.GetVehicleByUser(_testHelper.getAvailableVehiclesRequest, CancellationToken.None);
+        UsersService usersService = _testHelper
+            .CreateMockHttpMessageHandler("Uh oh", HttpStatusCode.BadGateway, new ServiceUnavailableException("Service Gone!"))
+            .CreateHttpClient()
+            .CreateUsersService();
+        _response = await new UsersController(usersService).GetVehicleByUser(new GetAvailableVehiclesRequest() { Name = "Anything"}, CancellationToken.None);
     }
 
     public Task DisposeAsync() => Task.CompletedTask;

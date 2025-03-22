@@ -1,56 +1,50 @@
 ﻿using System.Net;
-using Users.Controllers;
 using Users.Infrastructure;
 using Users.Infrastructure.FaultHandlers;
 using Users.Services.Users;
-using Users.Services.Users.Models;
 using Users.Services.Vehicles;
 
 namespace UsersTests.Integration.Api
 {
     public class TestHelper
     {
-        public UsersController UsersController { get; private set; }
+        private MockHttpMessageHandler? _mockHttpMessageHandler;
+        private HttpClient? _httpClient;
 
-        public TestHelper() => UsersController = CreateUserController();
-
-        public readonly GetAvailableVehiclesRequest getAvailableVehiclesRequest = new() { Name = "anything" };
-
-        private static UsersController CreateUserController()
+        public TestHelper CreateHttpClient()
         {
-            return CreateUserController(new HttpClient() { BaseAddress = new Uri(Services.baseAddress) });
+            if(_mockHttpMessageHandler == null)
+            {
+                throw new Exception($"You need to setup the handler first with {nameof(CreateMockHttpMessageHandler)}");
+            }
+
+            _httpClient = new HttpClient(_mockHttpMessageHandler)
+            {
+                BaseAddress = new Uri(Services.baseAddress)
+            };
+
+            return this;
         }
 
-        private static UsersController CreateUserController(HttpClient httpClient)
+        public TestHelper CreateMockHttpMessageHandler(string response, HttpStatusCode httpStatusCode, Exception exception)
         {
-            IVehicleService vehicleService = new VehiclesService(httpClient, new PollyFaultHandling());
-            IUsersService usersService = new UsersService(vehicleService);
-            return new UsersController(usersService);
-        }
-
-        public TestHelper UseFakeHttpClient(Exception exception)
-        {
-            var messageHandler = new MockHttpMessageHandler("does not matter", HttpStatusCode.Accepted)
+            _mockHttpMessageHandler = new MockHttpMessageHandler(response, httpStatusCode)
             {
                 ThrownException = exception
             };
-            UseFakeHttpClient(messageHandler);
             return this;
         }
 
-        public TestHelper UseFakeHttpClient(string response, HttpStatusCode httpStatusCode)
+        public UsersService CreateUsersService()
         {
-            UseFakeHttpClient(new MockHttpMessageHandler(response, httpStatusCode));
-            return this;
-        }
-
-        private void UseFakeHttpClient(MockHttpMessageHandler mockHttpMessageHandler)
-        {
-            var httpClient = new HttpClient(mockHttpMessageHandler)
+            if (_httpClient == null)
             {
-                BaseAddress = new Uri("https://justNeededToAppendARelativeUrl")
-            };
-            UsersController = CreateUserController(httpClient);
+                throw new Exception($"You need to setup the http client first with {nameof(CreateHttpClient)}");
+            }
+
+            IFaultHandling faultHandling = new PollyFaultHandling();
+            IVehicleService vehicleService = new VehiclesService(_httpClient, faultHandling);
+            return new UsersService(vehicleService);
         }
 
         private class MockHttpMessageHandler(string response, HttpStatusCode statusCode) : HttpMessageHandler
@@ -64,7 +58,7 @@ namespace UsersTests.Integration.Api
 
             protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                if(ThrownException != null)
+                if (ThrownException != null)
                 {
                     throw ThrownException;
                 }

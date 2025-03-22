@@ -27,8 +27,9 @@ public class UsersController(IUsersService usersService) : ControllerBase
             return Ok(response);
         }
 
-        catch (ServiceUnavailableException)
+        catch (ServiceUnavailableException ex)
         {
+            Logs.Add.InfoLog($"Vehicle service was down when called at {DateTime.Now}: " + ex.Message);
             return Problem(
                 statusCode: StatusCodes.Status502BadGateway,
                 title: "Bad Gateway",
