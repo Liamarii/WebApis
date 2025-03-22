@@ -77,4 +77,5 @@
 ---
 
 # **Notes**
-To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
+- To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
+- [Postgres Docker images](https://hub.docker.com/_/postgres)

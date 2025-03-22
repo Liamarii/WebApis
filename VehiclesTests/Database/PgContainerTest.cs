@@ -6,17 +6,17 @@ namespace VehiclesTests.Database
     [TestFixture]
     public class PgContainerTest
     {
+
         private PostgreSqlContainer? _postgresContainer;
-        private const string _createVehiclesTableQuery = @"
-                CREATE TABLE IF NOT EXISTS vehicles (
+        private const string _tableName = "vehicles";
+        private const string _createVehiclesTableQuery = @$"
+                CREATE TABLE IF NOT EXISTS {_tableName} (
                     id SERIAL PRIMARY KEY,
                     make VARCHAR(100),
                     model VARCHAR(100),
-                    year INT
-                );
-            ";
-        private const string _insertVehicleQuery = @"
-                INSERT INTO vehicles (make, model, year) 
+                    year INT);";
+        private const string _insertVehicleQuery = @$"
+                INSERT INTO {_tableName} (make, model, year) 
                 VALUES 
                     ('Hyundai', 'Pancake', 2021),
                     ('Bmw','Jellyfish', 2050);
@@ -76,9 +76,10 @@ namespace VehiclesTests.Database
             await using NpgsqlConnection connection = new(connectionString);
             await connection.OpenAsync();
 
-            string selectVehicleQuery = "SELECT COUNT(1) FROM vehicles";
-            await using var cmd = new NpgsqlCommand(selectVehicleQuery, connection);
-            long count = (long) await cmd.ExecuteScalarAsync();
+            await using NpgsqlCommand cmd = new($"SELECT COUNT(1) FROM {_tableName}", connection);
+            object? databaseResponse = await cmd.ExecuteScalarAsync();
+            long count = databaseResponse == null ? 0L : (long)databaseResponse;
+
             Assert.That(count, Is.EqualTo(2));
         }
     }
