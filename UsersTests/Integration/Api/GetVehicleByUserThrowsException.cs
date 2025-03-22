@@ -12,7 +12,7 @@ public class GetVehicleByUserThrowsException : IAsyncLifetime
     public async Task InitializeAsync()
     {
         _testHelper.UseFakeHttpClient(new InvalidCastException());
-        _response = await _testHelper.UsersController.GetVehicleByUser(_testHelper.getAvailableVehiclesRequest);
+        _response = await _testHelper.UsersController.GetVehicleByUser(_testHelper.getAvailableVehiclesRequest, CancellationToken.None);
     }
 
     public Task DisposeAsync() => Task.CompletedTask;

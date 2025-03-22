@@ -1,33 +1,25 @@
-﻿using Polly;
-using Polly.Retry;
+﻿using Users.Infrastructure.FaultHandlers;
 
-namespace Users.Infrastructure
+namespace Users.Infrastructure;
+
+public interface IFaultHandling
 {
-    public interface IFaultHandlingPolicies
+    Task<HttpResponseMessage> ExponentialBackoffAsync(Func<CancellationToken, Task<HttpResponseMessage>> input, CancellationToken cancellationToken); // Added CancellationToken parameter
+}
+
+public static class FaultHandling
+{
+    public static IServiceCollection AddFaultHandling(this IServiceCollection services, FaultHandler faultHandler)
     {
-        Task<HttpResponseMessage> ExponentialBackoffRetryPolicyAsync(Func<Task<HttpResponseMessage>> input);
-    }
-
-    public class FaultHandlingPolicies : IFaultHandlingPolicies
-    {
-        public FaultHandlingPolicies(int retryCount) => _retryCount = retryCount;
-
-        private static int _retryCount = 3;
-
-        private readonly AsyncRetryPolicy<HttpResponseMessage> _exponentialBackoffRetryPolicy = Policy
-            .Handle<HttpRequestException>() //This is just to test it with the service it's calling not turned on.
-            .OrResult<HttpResponseMessage>(static x => !x.IsSuccessStatusCode)
-            .WaitAndRetryAsync(
-                retryCount: _retryCount,
-                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                onRetry: (outcome, timespan, retryNumber, context) =>
-                {
-                    Logs.Add.WarningLog($"Retry {retryNumber} of {_retryCount} after {timespan.TotalSeconds} seconds due to {outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString()}");
-                });
-
-        public async Task<HttpResponseMessage> ExponentialBackoffRetryPolicyAsync(Func<Task<HttpResponseMessage>> input)
+        switch (faultHandler)
         {
-            return await _exponentialBackoffRetryPolicy.ExecuteAsync(input);
+            case FaultHandler.ResiliencePipelines:
+                services.AddSingleton<IFaultHandling>(provider => new ResiliencePipelineFaultHandling());
+                return services;
+            case FaultHandler.PollyRetries:
+            default:
+                services.AddSingleton<IFaultHandling>(provider => new PollyFaultHandling());
+                return services;
         }
     }
 }

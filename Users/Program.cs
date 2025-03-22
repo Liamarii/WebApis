@@ -1,16 +1,18 @@
 using Users.Infrastructure;
+using Users.Infrastructure.FaultHandlers;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        var services = builder.Services;
-        services.AddScalar();
-        services.AddControllers();
-        services.AddServices();
-        services.AddRateLimiting();
-        services.AddSingleton<IFaultHandlingPolicies>(provider => new FaultHandlingPolicies(3));
+        _ = builder.Services
+            .AddScalar()
+            .AddServices()
+            .AddRateLimiting()
+            .AddFaultHandling(FaultHandler.ResiliencePipelines)
+            .AddControllers();
+
         var app = builder.Build();
 
         app.UseHttpsRedirection();

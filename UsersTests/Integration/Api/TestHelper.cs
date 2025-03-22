@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Users.Controllers;
 using Users.Infrastructure;
+using Users.Infrastructure.FaultHandlers;
 using Users.Services.Users;
 using Users.Services.Users.Models;
 using Users.Services.Vehicles;
@@ -22,7 +23,7 @@ namespace UsersTests.Integration.Api
 
         private static UsersController CreateUserController(HttpClient httpClient)
         {
-            IVehicleService vehicleService = new VehiclesService(httpClient, new FaultHandlingPolicies(0));
+            IVehicleService vehicleService = new VehiclesService(httpClient, new PollyFaultHandling());
             IUsersService usersService = new UsersService(vehicleService);
             return new UsersController(usersService);
         }

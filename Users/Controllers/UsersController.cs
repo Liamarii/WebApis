@@ -19,11 +19,11 @@ public class UsersController(IUsersService usersService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status429TooManyRequests, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status502BadGateway, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public async Task<ActionResult<GetAvailableVehiclesResponse>> GetVehicleByUser([FromBody, Required] GetAvailableVehiclesRequest getVehicleByUserRequest)
+    public async Task<ActionResult<GetAvailableVehiclesResponse>> GetVehicleByUser([FromBody, Required] GetAvailableVehiclesRequest getVehicleByUserRequest, CancellationToken cancellationToken)
     {
         try
         {
-            GetAvailableVehiclesResponse response = await usersService.GetAvailableVehicles(getVehicleByUserRequest);
+            GetAvailableVehiclesResponse response = await usersService.GetAvailableVehicles(getVehicleByUserRequest, cancellationToken);
             return Ok(response);
         }
 

@@ -13,7 +13,7 @@ public class GetVehicleByUserReturnsUnsuccessfulResponse : IAsyncLifetime
     public async Task InitializeAsync()
     {
         _testHelper.UseFakeHttpClient("Does not matter", HttpStatusCode.BadRequest);
-        _response = await _testHelper.UsersController.GetVehicleByUser(_testHelper.getAvailableVehiclesRequest);
+        _response = await _testHelper.UsersController.GetVehicleByUser(_testHelper.getAvailableVehiclesRequest, CancellationToken.None);
     }
 
     public Task DisposeAsync() => Task.CompletedTask;

@@ -6,15 +6,15 @@ namespace Users.Services.Users;
 
 public interface IUsersService
 {
-    public Task<GetAvailableVehiclesResponse> GetAvailableVehicles(GetAvailableVehiclesRequest request);
+    public Task<GetAvailableVehiclesResponse> GetAvailableVehicles(GetAvailableVehiclesRequest request, CancellationToken cancellationToken);
 }
 
 public class UsersService(IVehicleService vehicleService) : IUsersService
 {
-    public async Task<GetAvailableVehiclesResponse> GetAvailableVehicles(GetAvailableVehiclesRequest request)
+    public async Task<GetAvailableVehiclesResponse> GetAvailableVehicles(GetAvailableVehiclesRequest request, CancellationToken cancellationToken)
     {
         string vehicleMake = DetermineVehicleMake();
-        GetVehiclesByMakeResponse getVehiclesByMakeResponse = await vehicleService.GetVehiclesByMake(new GetVehiclesByMakeRequest { Make = vehicleMake });
+        GetVehiclesByMakeResponse getVehiclesByMakeResponse = await vehicleService.GetVehiclesByMake(new GetVehiclesByMakeRequest { Make = vehicleMake }, cancellationToken);
         return new GetAvailableVehiclesResponse(request.Name, getVehiclesByMakeResponse.Vehicles.Single());
     }
 

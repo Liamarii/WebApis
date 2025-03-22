@@ -8,17 +8,19 @@ namespace Users.Services.Vehicles;
 
 public interface IVehicleService
 {
-    public Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest make);
+    public Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest make, CancellationToken cancellationToken);
 }
 
-public class VehiclesService(HttpClient httpClient, IFaultHandlingPolicies policies) : IVehicleService
+public class VehiclesService(HttpClient httpClient, IFaultHandling faultHandling) : IVehicleService
 {
     private const string _url = "/api/Vehicles/GetVehiclesByMake";
     private readonly HttpClient _httpClient = httpClient;
 
-    public async Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest request)
+    public async Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest request, CancellationToken cancellationToken)
     {
-        HttpResponseMessage responseMessage = await policies.ExponentialBackoffRetryPolicyAsync(() => _httpClient.PostAsync(_url, new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")));
+        async Task<HttpResponseMessage> httpRequest(CancellationToken cancellationToken) => await _httpClient.PostAsync(_url, new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), cancellationToken);
+
+        HttpResponseMessage responseMessage = await faultHandling.ExponentialBackoffAsync(httpRequest, cancellationToken);
 
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -26,6 +28,6 @@ public class VehiclesService(HttpClient httpClient, IFaultHandlingPolicies polic
             throw new ServiceUnavailableException($"Unable to call the {nameof(VehiclesService)}");
         }
 
-        return ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await responseMessage.Content.ReadAsByteArrayAsync());
+        return ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await responseMessage.Content.ReadAsByteArrayAsync(cancellationToken));
     }
 }
