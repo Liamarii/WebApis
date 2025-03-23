@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features;
@@ -11,7 +10,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 [TestFixture("Hyundai")]
 [TestFixture("Toyota")]
 [Parallelizable]
-public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : WebApplicationFactory<Vehicles.Program>
+public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : CustomWebApplicationFactory<Vehicles.Program>
 {
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
