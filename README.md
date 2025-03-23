@@ -1,4 +1,4 @@
-# **Done:**
+# **Done**
 - Use `HttpClient` services
 - Use `MediatR`
 - Use `Swagger UI`
@@ -28,7 +28,7 @@
 - Use a custom web application factory to switch configs during testing.
 ---
 
-# **Ideas:**
+# **Ideas**
 - Add a mock `HttpClient` with `Moq`
 - Add scoped logging
 - Add header propagation
