@@ -1,4 +1,4 @@
-# **Done:**
+# **Done**
 - Use `HttpClient` services
 - Use `MediatR`
 - Use `Swagger UI`
@@ -25,9 +25,10 @@
 - Use `Polly` for fault handling.
 - Use `Resilience Pipeline` for fault handling. 
 - Use `Test Containers` to hold some Postgres test data.
+- Use a custom web application factory to switch configs during testing.
 ---
 
-# **Ideas:**
+# **Ideas**
 - Add a mock `HttpClient` with `Moq`
 - Add scoped logging
 - Add header propagation
@@ -50,7 +51,6 @@
   - Add `Redis` cache
   - Add In-Memory cache
   - Add `Dragonfly` cache
-- Add configuration values
 - Add secret keys
 - Add a shared area:
   - Common project
@@ -81,3 +81,4 @@
 # **Notes**
 - To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
 - [Postgres Docker images](https://hub.docker.com/_/postgres)
+- The VehiclesTests project uses a custom web app factory to change the environment which will point to a test database.
