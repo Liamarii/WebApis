@@ -1,3 +1,8 @@
+# **What is this**
+I use this repo to both practice and try out new ideas but mainly as a future reference for myself.
+The solution is not intended to be production ready code as the concepts practiced are not applied throughout.
+For example error handling is listed below and is demonstrated in one place will likely not be anywhere else when in practice it'd be done throughout.
+
 # **Done**
 - Use `HttpClient` services
 - Use `MediatR`
@@ -26,6 +31,8 @@
 - Use `Resilience Pipeline` for fault handling. 
 - Use `Test Containers` to hold some Postgres test data.
 - Use a custom web application factory to switch configs during testing.
+- Use `Fluent NHibernate` to read in real data from a Postgres database.
+- Use `LINQ` or LINQ style queries.
 ---
 
 # **Ideas**
@@ -33,8 +40,6 @@
 - Add scoped logging
 - Add header propagation
 - Add Docker containers
-- Add Test containers
-- Add `NHibernate`
 - Add `EF Core`
 - Add telemetry
 - Add webhooks
@@ -62,10 +67,10 @@
 - Add a circuit breaker
 - Add Swagger docs
 - Add HATEOAS
-- Use LINQ
 - Add PDF generator
 - Add Authorisation
 - Add Authentication
+- Add an auto mapper
 
 ---
 
@@ -75,7 +80,7 @@
 - ```wsl --set-default-version 2``` Use WSL 2 instead of the default 1 as it has improvements.
 - Open Docker Desktop
 - Check both are running ```wsl --list --verbose```
-
+- Temp: As of 25/03/25 you'd need the underlying real postgres database the run in but I'll config a container of data in soon.
 ---
 
 # **Notes**
