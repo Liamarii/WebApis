@@ -1,5 +1,6 @@
-using Vehicles.Data;
+using Vehicles.Data.Repositories;
 using Vehicles.Enums;
+using Vehicles.Infrastructure;
 
 namespace Vehicles;
 
@@ -14,6 +15,7 @@ public class Program
         builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(Program).Assembly));
         builder.Services.AddControllers();
         builder.Services.AddSingleton<IVehiclesRepository, VehiclesRepository>();
+        builder.Services.AddSingleton(NHibernateHelper.GetSessionFactory());
 
         string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         bool unknownEnvironment = Enum.TryParse(environment, true, out EnvironmentTypes environmentType) == false;

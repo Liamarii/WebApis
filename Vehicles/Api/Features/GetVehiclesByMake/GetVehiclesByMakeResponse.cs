@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 using System.Text.Json.Serialization;
-using Vehicles.Models;
+using Vehicles.Dtos;
 
 namespace Vehicles.Api.Features.GetVehiclesByMake;
 
@@ -9,5 +9,5 @@ public class GetVehiclesByMakeResponse
 {
     [JsonPropertyName("vehicles")]
     [ProtoMember(1)]
-    public required IEnumerable<Vehicle> Vehicles { get; set; }
+    public required IEnumerable<VehicleDto> Vehicles { get; set; }
 }

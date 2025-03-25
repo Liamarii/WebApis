@@ -6,9 +6,11 @@ using Vehicles.Api.Features.GetVehiclesByMake;
 
 namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 
-[TestFixture("Volvo")]
-[TestFixture("Hyundai")]
-[TestFixture("Toyota")]
+[TestFixture("Honda")]
+[TestFixture("Ford")]
+[TestFixture("Nissan")]
+[TestFixture("Jeep")]
+[TestFixture("Tesla")]
 [Parallelizable]
 public class GivenARequestToGetVehiclesByMakeAsJson(string make) : CustomWebApplicationFactory<Vehicles.Program>
 {

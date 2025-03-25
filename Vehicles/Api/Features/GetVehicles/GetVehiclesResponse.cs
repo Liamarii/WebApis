@@ -1,10 +1,10 @@
 ﻿using System.Text.Json.Serialization;
-using Vehicles.Models;
+using Vehicles.Dtos;
 
 namespace Vehicles.Api.Features.GetVehicles;
 
 public class GetVehiclesResponse
 {
     [JsonPropertyName("vehicles")]
-    public required IEnumerable<Vehicle> Vehicles { get; set; }
+    public required IEnumerable<VehicleDto> Vehicles { get; set; }
 }

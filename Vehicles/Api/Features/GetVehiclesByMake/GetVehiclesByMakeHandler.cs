@@ -1,18 +1,17 @@
 ﻿using MediatR;
-using Vehicles.Data;
-using Vehicles.Models;
+using Vehicles.Data.Repositories;
+using Vehicles.Dtos;
 
 namespace Vehicles.Api.Features.GetVehiclesByMake;
 
-public class GetVehiclesByMakeHandler(IVehiclesRepository vehiclesRepositoryStub) : IRequestHandler<GetVehiclesByMakeRequest, GetVehiclesByMakeResponse>
+public class GetVehiclesByMakeHandler(IVehiclesRepository vehiclesRepository) : IRequestHandler<GetVehiclesByMakeRequest, GetVehiclesByMakeResponse>
 {
     public async Task<GetVehiclesByMakeResponse> Handle(GetVehiclesByMakeRequest getVehiclesRequest, CancellationToken cancellationToken)
     {
-        List<Vehicle> result = await vehiclesRepositoryStub.GetVehicles(cancellationToken);
-
+        var vehicles = await vehiclesRepository.GetVehiclesByMakeAsync(getVehiclesRequest.Make, cancellationToken);
         return new()
         {
-            Vehicles = result.Where(x => x.Make == getVehiclesRequest.Make)
+            Vehicles = vehicles.Select(v => new VehicleDto().FromVehicle(v))
         };
     }
 }

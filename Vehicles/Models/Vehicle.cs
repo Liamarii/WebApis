@@ -1,16 +1,11 @@
-﻿using ProtoBuf;
-using System.Text.Json.Serialization;
-
-namespace Vehicles.Models;
-
-[ProtoContract]
-public class Vehicle
+﻿namespace Vehicles.Models
 {
-    [ProtoMember(1)]
-    [JsonPropertyName("make")]
-    public required string Make { get; init; }
-
-    [ProtoMember(2)]
-    [JsonPropertyName("model")]
-    public required string Model { get; init; }
+    public class Vehicle
+    {
+        public virtual int Id { get; set; }
+        public virtual string Vin { get; set; } = string.Empty;
+        public virtual string Make { get; set; } = string.Empty;
+        public virtual string Model { get; set; } = string.Empty;
+        public virtual int Year { get; set; }
+    }
 }

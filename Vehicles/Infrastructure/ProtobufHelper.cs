@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Vehicles.Api.Features
+namespace Vehicles.Infrastructure
 {
     public static class ProtobufHelper
     {

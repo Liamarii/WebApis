@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Vehicles.Api.Features;
 using Vehicles.Api.Features.GetVehicles;
 using Vehicles.Api.Features.GetVehiclesByMake;
+using Vehicles.Infrastructure;
 
 namespace Vehicles.Api.Controllers;
 

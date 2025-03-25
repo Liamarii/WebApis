@@ -1,14 +1,16 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
-using Vehicles.Api.Features;
 using Vehicles.Api.Features.GetVehiclesByMake;
+using Vehicles.Infrastructure;
 
 namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 
-[TestFixture("Volvo")]
-[TestFixture("Hyundai")]
-[TestFixture("Toyota")]
+[TestFixture("Honda")]
+[TestFixture("Ford")]
+[TestFixture("Nissan")]
+[TestFixture("Jeep")]
+[TestFixture("Tesla")]
 [Parallelizable]
 public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : CustomWebApplicationFactory<Vehicles.Program>
 {
