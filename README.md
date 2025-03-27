@@ -33,6 +33,7 @@ For example error handling is listed below and is demonstrated in one place will
 - Use a custom web application factory to switch configs during testing.
 - Use `Fluent NHibernate` to read in real data from a Postgres database.
 - Use `LINQ` or LINQ style queries.
+- Use `IOptions` configuration sections.
 ---
 
 # **Ideas**
