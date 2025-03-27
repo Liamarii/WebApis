@@ -10,18 +10,18 @@ public interface IVehiclesRepository
 
 }
 
-public class VehiclesRepository : IVehiclesRepository
+public class VehiclesRepository(INHibernateDatabase nHibernateDatabase) : IVehiclesRepository
 {
     public async Task<IList<Vehicle>> GetVehiclesAsync(CancellationToken cancellationToken)
     {
-        using NHibernate.ISession session = NHibernateHelper.OpenSession();
+        using NHibernate.ISession session = nHibernateDatabase.OpenSession();
         return await session.QueryOver<Vehicle>()
                             .ListAsync(cancellationToken);
     }
 
     public async Task<IList<Vehicle>> GetVehiclesByMakeAsync(string make, CancellationToken cancellationToken)
     {
-        using NHibernate.ISession session = NHibernateHelper.OpenSession();
+        using NHibernate.ISession session = nHibernateDatabase.OpenSession();
         return await session.QueryOver<Vehicle>()
                             .Where(x => x.Make == make)
                             .ListAsync(cancellationToken);

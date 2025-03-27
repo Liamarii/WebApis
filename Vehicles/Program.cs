@@ -1,6 +1,9 @@
+using Microsoft.Extensions.Options;
+using System.Reflection;
 using Vehicles.Data.Repositories;
 using Vehicles.Enums;
 using Vehicles.Infrastructure;
+using Vehicles.Infrastructure.Configurations;
 
 namespace Vehicles;
 
@@ -15,7 +18,6 @@ public class Program
         builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(Program).Assembly));
         builder.Services.AddControllers();
         builder.Services.AddSingleton<IVehiclesRepository, VehiclesRepository>();
-        builder.Services.AddSingleton(NHibernateHelper.GetSessionFactory());
 
         string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         bool unknownEnvironment = Enum.TryParse(environment, true, out EnvironmentTypes environmentType) == false;
@@ -31,7 +33,8 @@ public class Program
             .AddEnvironmentVariables()
             .Build();
 
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        builder.Services.Configure<DatabaseConfig>(config.GetSection("ConnectionStrings"));
+        builder.Services.AddSingleton<INHibernateDatabase, NHibernateDatabase>(x => new NHibernateDatabase(x.GetRequiredService<IOptions<DatabaseConfig>>(), Assembly.GetExecutingAssembly()));
 
         var app = builder.Build();
         app.UseHttpsRedirection();
