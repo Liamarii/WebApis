@@ -7,7 +7,6 @@ public interface IVehiclesRepository
 {
     public Task<IList<Vehicle>> GetVehiclesAsync(CancellationToken cancellationToken);
     public Task<IList<Vehicle>> GetVehiclesByMakeAsync(string make, CancellationToken cancellationToken);
-
 }
 
 public class VehiclesRepository(INHibernateDatabase nHibernateDatabase) : IVehiclesRepository
