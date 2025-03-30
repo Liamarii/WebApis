@@ -72,7 +72,7 @@ For example error handling is listed below and is demonstrated in one place will
 - Add Authorisation
 - Add Authentication
 - Add an auto mapper
-
+- Add Wiremock tests
 ---
 
 # **Prerequisites**
