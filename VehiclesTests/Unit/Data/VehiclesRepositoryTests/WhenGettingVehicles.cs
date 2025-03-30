@@ -2,8 +2,8 @@
 using NHibernate;
 using NUnit.Framework.Internal;
 using Vehicles.Data.Repositories;
-using Vehicles.Infrastructure;
-using Vehicles.Models;
+using Vehicles.Infrastructure.Persistence;
+using Vehicles.Infrastructure.Persistence.Entities;
 
 namespace VehiclesTests.Unit.Data.VehiclesRepositoryTests
 {

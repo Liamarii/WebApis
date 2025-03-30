@@ -1,5 +1,5 @@
-﻿using Vehicles.Infrastructure;
-using Vehicles.Models;
+﻿using Vehicles.Infrastructure.Persistence;
+using Vehicles.Infrastructure.Persistence.Entities;
 
 namespace Vehicles.Data.Repositories;
 

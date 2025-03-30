@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Vehicles.Api.Features.GetVehicles;
 using Vehicles.Api.Features.GetVehiclesByMake;
-using Vehicles.Infrastructure;
+using Vehicles.Infrastructure.Serialisation;
 
 namespace Vehicles.Api.Controllers;
 

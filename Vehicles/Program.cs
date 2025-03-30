@@ -2,8 +2,8 @@ using Microsoft.Extensions.Options;
 using System.Reflection;
 using Vehicles.Data.Repositories;
 using Vehicles.Enums;
-using Vehicles.Infrastructure;
 using Vehicles.Infrastructure.Configurations;
+using Vehicles.Infrastructure.Persistence;
 
 namespace Vehicles;
 

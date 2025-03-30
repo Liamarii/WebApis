@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Vehicles.Infrastructure
+namespace Vehicles.Infrastructure.Serialisation
 {
     public static class ProtobufHelper
     {

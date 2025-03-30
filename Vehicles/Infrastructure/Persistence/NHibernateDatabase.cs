@@ -5,7 +5,7 @@ using NHibernate;
 using System.Reflection;
 using Vehicles.Infrastructure.Configurations;
 
-namespace Vehicles.Infrastructure
+namespace Vehicles.Infrastructure.Persistence
 {
     public interface INHibernateDatabase
     {

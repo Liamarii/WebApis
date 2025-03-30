@@ -1,5 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
-using Vehicles.Models;
+using Vehicles.Infrastructure.Persistence.Entities;
 
 namespace Vehicles.Data.Mappings
 {

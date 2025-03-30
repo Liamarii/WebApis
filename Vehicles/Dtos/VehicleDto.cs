@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 using System.Text.Json.Serialization;
-using Vehicles.Models;
+using Vehicles.Infrastructure.Persistence.Entities;
 
 namespace Vehicles.Dtos;
 

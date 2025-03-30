@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features.GetVehiclesByMake;
-using Vehicles.Infrastructure;
+using Vehicles.Infrastructure.Serialisation;
 
 namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 

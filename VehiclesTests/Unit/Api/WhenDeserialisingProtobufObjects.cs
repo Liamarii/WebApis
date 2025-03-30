@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework.Legacy;
 using ProtoBuf;
-using Vehicles.Infrastructure;
+using Vehicles.Infrastructure.Serialisation;
 
 namespace VehiclesTests.Unit.Api
 {

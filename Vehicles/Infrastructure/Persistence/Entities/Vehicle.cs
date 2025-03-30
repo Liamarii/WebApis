@@ -1,4 +1,4 @@
-﻿namespace Vehicles.Models
+﻿namespace Vehicles.Infrastructure.Persistence.Entities
 {
     public class Vehicle
     {
