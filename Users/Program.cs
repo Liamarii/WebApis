@@ -12,9 +12,21 @@ internal class Program
             .AddFaultHandling(FaultHandler.ResiliencePipelines)
             .AddControllers();
 
+        var policyName = "StopBlockingMe";
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(policyName,
+                policy => policy
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+        });
+
         var app = builder.Build();
 
         app.UseHttpsRedirection();
+        app.UseCors(policyName);
 
         if (app.Environment.IsDevelopment())
         {
