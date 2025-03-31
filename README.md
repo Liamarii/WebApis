@@ -35,7 +35,13 @@ For example error handling is listed below and is demonstrated in one place will
 - Use `LINQ` or LINQ style queries.
 - Use `IOptions` configuration sections.
 ---
+# **Doing**
+Added an Angular UI project and hooked it up to the Users service so it can pull data through.
+It's just a blank page with the API response in plain text, very ugly still.
+Maybe neaten it up next with some tailwind and shadcn.
+Also move that CORS code into a clean single file to construct it and maybe restrict its access down a bit.
 
+---
 # **Ideas**
 - Add a mock `HttpClient` with `Moq`
 - Add scoped logging
