@@ -20,7 +20,7 @@ public class UsersService(IVehicleService vehicleService) : IUsersService
 
     private static string DetermineVehicleMake()
     {
-        string[] makes = ["Hyundai", "Volvo", "Kia", "Toyota"];
+        string[] makes = ["Honda", "Ford", "Nissan", "Jeep","Tesla"];
         int randomMakesIndex = new Random().Next(0, makes.Length - 1);
         return makes[randomMakesIndex];
     }
