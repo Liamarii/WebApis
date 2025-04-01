@@ -10,8 +10,8 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  getVehicleByUser(): Observable<UsersResponse> {
-    const body = { name: 'Liam' };
+  getVehicleByUser(username : string): Observable<UsersResponse> {
+    const body = { name: username };
     return this.http.post<UsersResponse>('https://localhost:7146/Users', body);
   }
 }
