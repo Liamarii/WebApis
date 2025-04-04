@@ -4,7 +4,7 @@ using Users.Infrastructure.FaultHandlers;
 using Users.Services.Users;
 using Users.Services.Vehicles;
 
-namespace UsersTests.Integration.Api
+namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
 {
     public class TestHelper
     {
@@ -13,9 +13,9 @@ namespace UsersTests.Integration.Api
 
         public TestHelper CreateHttpClient()
         {
-            if(_mockHttpMessageHandler == null)
+            if (_mockHttpMessageHandler == null)
             {
-                throw new Exception($"You need to setup the handler first with {nameof(CreateMockHttpMessageHandler)}");
+                throw new InvalidOperationException($"You need to setup the handler first with {nameof(CreateMockHttpMessageHandler)}");
             }
 
             _httpClient = new HttpClient(_mockHttpMessageHandler)
@@ -39,7 +39,7 @@ namespace UsersTests.Integration.Api
         {
             if (_httpClient == null)
             {
-                throw new Exception($"You need to setup the http client first with {nameof(CreateHttpClient)}");
+                throw new InvalidOperationException($"You need to setup the http client first with {nameof(CreateHttpClient)}");
             }
 
             IFaultHandling faultHandling = new PollyFaultHandling();

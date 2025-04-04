@@ -5,7 +5,7 @@ using Users.Controllers;
 using Users.Services.Users;
 using Users.Services.Users.Models;
 
-namespace UsersTests.Integration.Api;
+namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests;
 
 public class GetVehicleByUserThrowsException(TestHelper testHelper) : IClassFixture<TestHelper>, IAsyncLifetime
 {

@@ -5,6 +5,7 @@ using Users.Controllers;
 using Users.Exceptions;
 using Users.Services.Users;
 using Users.Services.Users.Models;
+using UsersTests.Integration.Api.MockHttpMessageHandlerTests;
 
 namespace UsersTests.Integration.Api;
 
