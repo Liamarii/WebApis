@@ -5,13 +5,13 @@ namespace Users.Infrastructure;
 
 public static class Services
 {
-    public const string baseAddress = "https://localhost:7264";
-
-    public static IServiceCollection AddServices(this IServiceCollection services)
+    public static IServiceCollection AddServices(this IServiceCollection services, string? vehiclesServiceBase)
     {
+        ArgumentNullException.ThrowIfNull(vehiclesServiceBase);
+
         services.AddHttpClient<IVehicleService, VehiclesService>(client =>
         {
-            client.BaseAddress = new Uri(baseAddress);
+            client.BaseAddress = new Uri(vehiclesServiceBase);
         });
 
         services.AddSingleton<IUsersService, UsersService>();

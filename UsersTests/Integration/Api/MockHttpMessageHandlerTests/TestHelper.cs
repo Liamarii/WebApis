@@ -20,7 +20,7 @@ namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
 
             _httpClient = new HttpClient(_mockHttpMessageHandler)
             {
-                BaseAddress = new Uri(Services.baseAddress)
+                BaseAddress = new Uri("https://localhost:7264")
             };
 
             return this;

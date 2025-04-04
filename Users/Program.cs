@@ -5,28 +5,23 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var config = builder.Configuration;
+
         _ = builder.Services
+            .AddCorsPolicies(config.GetSection("Cors")["AngularOrigin"])
             .AddScalar()
-            .AddServices()
+            .AddServices(config.GetSection("Services")["VehiclesService"])
             .AddRateLimiting()
-            .AddFaultHandling(FaultHandler.ResiliencePipelines)
-            .AddControllers();
+            .AddFaultHandling(FaultHandler.ResiliencePipelines);
 
-        var policyName = "StopBlockingMe";
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(policyName,
-                policy => policy
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-        });
+        builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+        builder.Services.AddControllers();
 
         var app = builder.Build();
 
         app.UseHttpsRedirection();
-        app.UseCors(policyName);
+        app.UseCorsPolicies();
 
         if (app.Environment.IsDevelopment())
         {
