@@ -82,7 +82,6 @@ For example error handling is listed below and is demonstrated in one place will
 - ```wsl --set-default-version 2``` Use WSL 2 instead of the default 1 as it has improvements.
 - Open Docker Desktop
 - Check both are running ```wsl --list --verbose```
-- Temp: As of 25/03/25 you'd need the underlying real postgres database the run in but I'll config a container of data in soon.
 ---
 
 # **Notes**
