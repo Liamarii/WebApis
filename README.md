@@ -1,7 +1,8 @@
 # **What is this**
-I use this repo to both practice and try out new ideas but mainly as a future reference for myself.
-The solution is not intended to be production ready code as the concepts practiced are not applied throughout.
-For example error handling is listed below and is demonstrated in one place will likely not be anywhere else when in practice it'd be done throughout.
+This repository is a sandbox for experimenting with backend and frontend patterns commonly used in modern applications. It serves as both a learning tool and a reference for myself. 
+The code is not intended to be production-ready, each concept is usually implemented in a single place rather than throughout.
+
+Note: Concepts are implemented in isolation. For example, error handling may be shown in one feature but not applied throughout the code base.
 
 # **Done**
 - Use `HttpClient` services
