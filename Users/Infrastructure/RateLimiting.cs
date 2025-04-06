@@ -5,7 +5,7 @@ namespace Users.Infrastructure;
 
 public static class RateLimiting
 {
-    public static IServiceCollection AddRateLimiting(this IServiceCollection services)
+    public static IServiceCollection AddRateLimiting(this IServiceCollection services, TimeSpan window, int permitLimit)
     {
         services.AddRateLimiter(options =>
         {
@@ -14,8 +14,8 @@ public static class RateLimiting
                     partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
                     factory: _ => new SlidingWindowRateLimiterOptions
                     {
-                        PermitLimit = 10,
-                        Window = TimeSpan.FromMinutes(1),
+                        PermitLimit = permitLimit,
+                        Window = window,
                         SegmentsPerWindow = 4
                     }));
 

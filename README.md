@@ -8,36 +8,38 @@ For example error handling is listed below and is demonstrated in one place will
 - Use `MediatR`
 - Use `Swagger UI`
 - Use `Scalar UI`
-- Add a static logger example to get a generic response structure
-- Simplify the program setup with split-out infrastructure logic
-- Use feature structure
-- Add integration test examples
-- Add unit test examples
-- Add snapshot test examples
+- Use a static logger to get a generic response structure
+- Use a simplified setup with split out infrastructure logic
+- Use snapshot testing.
 - Use error handling
 - Use cancellation tokens
-- Use `protobuf` to deserialize responses when consuming
-- Use `protobuf` to serialize responses when producing
-- Make the `protobuf` methods generic
+- Use `protobuf` to serialize and deserialize in a generic way. 
 - Use rate limiting
-- Use `XUnit`
-- Use `NUnit`
-- Use `Moq`
-- Use `NSubstitute`
-- Add a mock `HttpClient` with `NSubstitute`
-- Add custom exception handling
-- Add standardized `ProblemDetails` error responses (RFC 7807)
+- Use feature structure
+- Use custom exception handling
+- Use standardized `ProblemDetails` error responses (RFC 7807)
 - Use `Polly` for fault handling.
 - Use `Resilience Pipeline` for fault handling. 
-- Use `Test Containers` to hold some Postgres test data.
-- Use a custom web application factory to switch configs during testing.
 - Use `Fluent NHibernate` to read in real data from a Postgres database.
 - Use `LINQ` or LINQ style queries.
 - Use `IOptions` configuration sections.
+- Use `Angular` for the UI
+- Use `Cors` to allow a request through from the UI.
+- Use a mock `HttpClient` message handler.
+
+- Testing
+  - Use integration tests
+  - Use unit tests
+  - Use `XUnit`
+  - Use `NUnit`
+  - Use `Moq`
+  - Use `NSubstitute`
+  - Use `WireMock` tests.
+  - Use `Test Containers` to hold some Postgres test data.
+  - Use a custom `web application factory` to switch configs during testing.
 
 ---
 # **Ideas**
-- Add a mock `HttpClient` with `Moq`
 - Add scoped logging
 - Add header propagation
 - Add Docker containers
@@ -72,7 +74,6 @@ For example error handling is listed below and is demonstrated in one place will
 - Add Authorisation
 - Add Authentication
 - Add an auto mapper
-- Add Wiremock tests
 ---
 
 # **Prerequisites**

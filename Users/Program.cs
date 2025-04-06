@@ -14,7 +14,7 @@ public class Program
             .AddCorsPolicies(config.GetSection("Cors")["AngularOrigin"])
             .AddScalar()
             .AddServices(config.GetSection("Services")["VehiclesService"])
-            .AddRateLimiting()
+            .AddRateLimiting(window: TimeSpan.FromSeconds(10), permitLimit: 3)
             .AddFaultHandling(FaultHandler.ResiliencePipelines);
 
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);

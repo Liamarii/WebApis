@@ -11,7 +11,7 @@ using WireMock.ResponseBuilders;
 namespace UsersTests.Integration.Api.WireMockTests;
 
 [Collection("WireMock Tests")]
-public class GetVehicleByUserReturnsUnsuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
+public class GetVehicleByUserReturnsBadGatewayResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
 {
     private ProblemDetails? _response;
 
