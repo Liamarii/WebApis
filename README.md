@@ -89,3 +89,4 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 - To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
 - [Postgres Docker images](https://hub.docker.com/_/postgres)
 - The VehiclesTests project uses a custom web app factory to change the environment which will point to a test database.
+- The code currently uses a real Postgres database I have locally.
