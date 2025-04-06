@@ -10,7 +10,6 @@ namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
     {
         private MockHttpMessageHandler? _mockHttpMessageHandler;
         private HttpClient? _httpClient;
-
         public TestHelper CreateHttpClient()
         {
             if (_mockHttpMessageHandler == null)

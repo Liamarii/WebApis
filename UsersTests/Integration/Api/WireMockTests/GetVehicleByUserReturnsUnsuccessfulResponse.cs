@@ -1,0 +1,73 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using Users.Services.Users.Models;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
+using WireMock.Server;
+using WireMock.Settings;
+
+namespace UsersTests.Integration.Api.WireMockTests;
+
+public class GetVehicleByUserReturnsUnsuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsUnsuccessfulResponseClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsUnsuccessfulResponseClassFixture>, IAsyncLifetime
+{
+    private ProblemDetails? _response;
+
+    public async Task InitializeAsync()
+    {
+        Assert.True(classFixture.server.IsStarted);
+
+        var client = factory.CreateClient();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        var request = new GetAvailableVehiclesRequest() { Name = "Bob" };
+        var responseMessage = await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
+        var responseMessageContent = await responseMessage.Content.ReadAsStringAsync();
+        _response = JsonSerializer.Deserialize<ProblemDetails>(responseMessageContent);
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
+
+    [Fact]
+    public void ReturnsExpectedResponseType() => Assert.IsType<ProblemDetails>(_response);
+
+    [Fact]
+    public void ReturnExpectedStatusCode() => Assert.Equal(StatusCodes.Status502BadGateway, _response?.Status);
+
+    [Fact]
+    public void ReturnsTheExpectedTitle() => Assert.Equal("Bad Gateway", _response?.Title);
+
+    [Fact]
+    public void ReturnsTheExpectedDetail() => Assert.Equal("External service is unavailable.", _response?.Detail);
+}
+
+public class GetVehicleByUserReturnsUnsuccessfulResponseClassFixture : IDisposable
+{
+    public WireMockServer server;
+
+    public GetVehicleByUserReturnsUnsuccessfulResponseClassFixture()
+    {
+        server = WireMockServer.Start(new WireMockServerSettings
+        {
+            Port = 7264,
+            UseSSL = true
+        });
+
+        server
+            .Given(Request.Create()
+                .WithPath("/api/Vehicles/GetVehiclesByMake")
+                .UsingPost())
+            .RespondWith(Response.Create()
+                .WithStatusCode(502)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("{ \"error\": \"Bad Request: invalid input\" }"));
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        server.Stop();
+    }
+}

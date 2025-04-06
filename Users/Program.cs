@@ -1,6 +1,8 @@
 using Users.Infrastructure;
 
-internal class Program
+namespace Users;
+
+public class Program
 {
     private static void Main(string[] args)
     {
