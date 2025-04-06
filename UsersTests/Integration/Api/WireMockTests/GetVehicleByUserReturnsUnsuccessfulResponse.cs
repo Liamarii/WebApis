@@ -7,19 +7,28 @@ using System.Text.Json;
 using Users.Services.Users.Models;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
-using WireMock.Server;
-using WireMock.Settings;
 
 namespace UsersTests.Integration.Api.WireMockTests;
 
-public class GetVehicleByUserReturnsUnsuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsUnsuccessfulResponseClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsUnsuccessfulResponseClassFixture>, IAsyncLifetime
+[Collection("WireMock Tests")]
+public class GetVehicleByUserReturnsUnsuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
 {
     private ProblemDetails? _response;
 
     public async Task InitializeAsync()
     {
-        Assert.True(classFixture.server.IsStarted);
+        var server = classFixture.server;
+        server.Reset();
+        server
+            .Given(Request.Create()
+                .WithPath("/api/Vehicles/GetVehiclesByMake")
+                .UsingPost())
+            .RespondWith(Response.Create()
+                .WithStatusCode(502)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("{ \"error\": \"Bad Request: invalid input\" }"));
 
+        Assert.True(classFixture.server.IsStarted);
         var client = factory.CreateClient();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         var request = new GetAvailableVehiclesRequest() { Name = "Bob" };
@@ -41,33 +50,4 @@ public class GetVehicleByUserReturnsUnsuccessfulResponse(WebApplicationFactory<U
 
     [Fact]
     public void ReturnsTheExpectedDetail() => Assert.Equal("External service is unavailable.", _response?.Detail);
-}
-
-public class GetVehicleByUserReturnsUnsuccessfulResponseClassFixture : IDisposable
-{
-    public WireMockServer server;
-
-    public GetVehicleByUserReturnsUnsuccessfulResponseClassFixture()
-    {
-        server = WireMockServer.Start(new WireMockServerSettings
-        {
-            Port = 7264,
-            UseSSL = true
-        });
-
-        server
-            .Given(Request.Create()
-                .WithPath("/api/Vehicles/GetVehiclesByMake")
-                .UsingPost())
-            .RespondWith(Response.Create()
-                .WithStatusCode(502)
-                .WithHeader("Content-Type", "application/json")
-                .WithBody("{ \"error\": \"Bad Request: invalid input\" }"));
-    }
-
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-        server.Stop();
-    }
 }

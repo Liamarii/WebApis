@@ -7,18 +7,33 @@ using Users.Services;
 using Users.Services.Users.Models;
 using Users.Services.Vehicles.Models;
 using WireMock.ResponseBuilders;
-using WireMock.Server;
-using WireMock.Settings;
 
 namespace UsersTests.Integration.Api.WireMockTests;
 
-public class GetVehicleByUserReturnsSuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsSuccessfulResponseClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsSuccessfulResponseClassFixture>, IAsyncLifetime
+[Collection("WireMock Tests")]
+public class GetVehicleByUserReturnsSuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
 {
     private HttpResponseMessage? _httpResponseMessage;
     private string? _response;
 
     public async Task InitializeAsync()
     {
+        var response = new GetVehiclesByMakeResponse()
+        {
+            Vehicles = [new() { Make = "Toyota", Model = "Corolla" }]
+        };
+
+        var server = classFixture.server;
+        server.Reset();
+        server
+            .Given(WireMock.RequestBuilders.Request.Create()
+            .WithPath("/api/Vehicles/GetVehiclesByMake")
+            .UsingPost())
+            .RespondWith(Response.Create()
+            .WithStatusCode(200)
+            .WithHeader("Content-Type", "application/x-protobuf")
+            .WithBody(ProtobufHelper.SerialiseToProtobuf(response)));
+
         Assert.True(classFixture.server.IsStarted);
 
         var client = factory.CreateClient();
@@ -39,38 +54,4 @@ public class GetVehicleByUserReturnsSuccessfulResponse(WebApplicationFactory<Use
 
     [Fact]
     public void ReturnsResultContainingRequestedName() => Assert.Contains("Bob", _response);
-}
-
-public class GetVehicleByUserReturnsSuccessfulResponseClassFixture : IDisposable
-{
-    public WireMockServer server;
-
-    public GetVehicleByUserReturnsSuccessfulResponseClassFixture()
-    {
-        var response = new GetVehiclesByMakeResponse()
-        {
-            Vehicles = [new() { Make = "Toyota", Model = "Corolla" }]
-        };
-
-        server = WireMockServer.Start(new WireMockServerSettings
-        {
-            Port = 7264,
-            UseSSL = true
-        });
-
-        server
-            .Given(WireMock.RequestBuilders.Request.Create()
-                .WithPath("/api/Vehicles/GetVehiclesByMake")
-                .UsingPost())
-            .RespondWith(Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "application/x-protobuf")
-                .WithBody(ProtobufHelper.SerialiseToProtobuf(response)));
-    }
-
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-        server.Stop();
-    }
 }
