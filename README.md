@@ -38,9 +38,13 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
   - Use `WireMock` tests.
   - Use `Test Containers` to hold some Postgres test data.
   - Use a custom `web application factory` to switch configs during testing.
-
+  - Use `Playwright` tests.
+    - Use `Playwright` to fake network responses.
 ---
-# **Ideas**
+# **Ideas / To do**
+- Add `Jest` tests
+- Style the Angular UI with `Tailwind` and `Shadcn`
+- Move over some of the code from the `AngularSite` to have some functioning forms / pages / loading spinner to hook tests into.
 - Add scoped logging
 - Add header propagation
 - Add Docker containers
@@ -49,12 +53,9 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 - Add webhooks
 - Add SOAP requests
 - Add message broker communications
-- Add a UI:
-  - Add an `Angular` UI
-  - Add a `Blazor` UI
+- Add a `Blazor` UI
 - Add an anti-corruption layer
 - Add Selenium tests
-- Add Playwright tests
 - Add Hurl tests
 - Add caching:
   - Add `Redis` cache
@@ -75,6 +76,7 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 - Add Authorisation
 - Add Authentication
 - Add an auto mapper
+- Add more details to the notes of how to run the angular project.
 ---
 
 # **Prerequisites**
@@ -89,4 +91,6 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 - To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
 - [Postgres Docker images](https://hub.docker.com/_/postgres)
 - The VehiclesTests project uses a custom web app factory to change the environment which will point to a test database.
-- The code currently uses a real Postgres database I have locally.
+- The code currently uses a real Postgres database I have locally which will be swapped out at some point.
+- Run playwright tests with `npx playwright test`
+- Launch playwright with `npm run start` after doing an import `npm i` and build `npm run build`.
