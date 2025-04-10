@@ -16,14 +16,11 @@ import { NgIf } from '@angular/common';
     <button (click)="fetchVehicle()" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">
       Send request
     </button>
-    <div *ngIf="response" [ngSwitch]="response.includes('Error')">
-    <p *ngSwitchCase="true" style="color: red; margin-top: 10px;">
-      {{ response }}
-    </p>
-    <p *ngSwitchDefault style="color: #28a745; margin-top: 10px;">
-      {{ response }}
-    </p>
-    </div>
+  </div>
+
+  <div *ngIf="response" [ngSwitch]="response.includes('Error')" id="response-container">
+    <p *ngSwitchCase="true" data-testid="response-message" style="color: red">{{response}}</p>
+    <p *ngSwitchDefault data-testid="response-message" style="color: green">{{response}}</p>
   </div>
   `
 })
@@ -36,7 +33,7 @@ export class HomeComponent {
 
   fetchVehicle() {
     if (!this.username.trim()) {
-      this.response = 'Username is required for the api call';
+      this.response = 'Error: username is required for the api call';
       return;
     }
     this.usersService.getVehicleByUser(this.username).subscribe({
