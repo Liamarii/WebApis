@@ -1,40 +1,32 @@
 import { expect } from '@playwright/test';
 import { test } from './fixtures';
+import { mockUsersService } from '../support/mocks/MockUsersService';
 
 test.describe('Perform a search', () => {
-  const knownUser = 'Arthur Strong';
-  const usernameFoundResponse = `${knownUser} drives a Hyundai Xi`
+  const request = 'Arthur Strong';
+  const response = `${request} drives a Hyundai Xi`;
 
-  test.beforeEach(async({ homePage, page }) => {
+  test.beforeEach(async ({ page, homePage }) => {
+    let mockService = new mockUsersService(page);
+    await mockService.mockPostRequestAsync(request, response)
     await homePage.goto();
+  });
 
-    await page.route('https://localhost:7146/Users', async (route, request) => {
-      if(request.method() == 'POST' && request.postData() == JSON.stringify({ name: `${knownUser}` }))
-      {
-        await route.fulfill({
-          status: 200,
-          contentType: 'text/plain',
-          body: JSON.stringify({ message: `${usernameFoundResponse}` }),
-        });
-      }
-    });
-  })
-
-  test('Should return the expected response when the username is found', async ({ homePage }) => { 
-    await homePage.usernameInputBox.fill(knownUser);
+  test('Should return the expected response when the username is found', async ({ homePage }) => {
+    await homePage.usernameInputBox.fill(request);
     await homePage.sendRequestButton.click();
     await expect(homePage.responseContainer).toBeVisible();
-    
+
     const containerText = await homePage.responseContainer.textContent();
-    
-    expect(containerText).toBe(usernameFoundResponse);
+
+    expect(containerText).toBe(response);
   })
 
-  test('Should show the expected error when attempting to search without adding a username', async ({ homePage }) => { 
+  test('Should show the expected error when attempting to search without adding a username', async ({ homePage }) => {
     await homePage.sendRequestButton.click();
     await expect(homePage.responseContainer).toBeVisible();
-    
-    const containerText = await homePage.responseContainer.textContent(); 
+
+    const containerText = await homePage.responseContainer.textContent();
     expect(containerText).toBe('Error: username is required for the api call');
   })
 });
