@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures';
-import { mockUsersService } from '../support/mocks/MockUsersService';
+import { mockUsersService } from './support/mocks/MockUsersService';
+import { test } from './support/fixtures'
 
 test.describe('Perform a search', () => {
   const request = 'Arthur Strong';

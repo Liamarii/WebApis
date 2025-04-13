@@ -47,3 +47,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Ignore the 'failed' folder inside visual tests
+/tests/visual/failed/
