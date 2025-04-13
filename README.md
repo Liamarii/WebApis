@@ -77,6 +77,7 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 - Add Authentication
 - Add an auto mapper
 - Add more details to the notes of how to run the angular project.
+- Add Reqnroll tests, Reqnroll replaced Specflow.
 ---
 
 # **Prerequisites**
@@ -88,9 +89,8 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 ---
 
 # **Notes**
-- To shutdown Ubuntu which gets left open even after existing Docker Desktop: ```wsl --shutdown```
-- [Postgres Docker images](https://hub.docker.com/_/postgres)
+- To shutdown Ubuntu which gets left open even after exiting Docker Desktop: ```wsl --shutdown```
 - The VehiclesTests project uses a custom web app factory to change the environment which will point to a test database.
-- The code currently uses a real Postgres database I have locally which will be swapped out at some point.
-- Run playwright tests with `npx playwright test`
-- Launch playwright with `npm run start` after doing an import `npm i` and build `npm run build`.
+- The API production code currently gets data from a real Postgres database I have running locally which will be swapped out at some point.
+- The API tests which pull data out of a database use a TestContainer docker image, not the real database [Postgres Docker images](https://hub.docker.com/_/postgres)
+- The UI has some Playwright tests in which I run using the Playwright test for VSCode extension.
