@@ -25,6 +25,7 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
 - Use `LINQ` or LINQ style queries.
 - Use `IOptions` configuration sections.
 - Use `Angular` for the UI
+  - Use `Angular Signals` for better change detection.
 - Use `Cors` to allow a request through from the UI.
 - Use a mock `HttpClient` message handler.
 
