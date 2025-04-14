@@ -1,8 +1,7 @@
 # **What is this**
-This repository is a sandbox for experimenting with backend and frontend patterns commonly used in modern applications. It serves as both a learning tool and a reference for myself. 
-The code is not intended to be production-ready, each concept is usually implemented in a single place rather than throughout.
+This repository is used as a sandbox for demonstrating, learning tool and a reference for myself. 
 
-Note: Concepts are implemented in isolation. For example, error handling may be shown in one feature but not applied throughout the code base.
+The code is not intended to be production-ready, each concept is usually implemented in a single place rather than throughout.
 
 # **Done**
 - Use `HttpClient` services
