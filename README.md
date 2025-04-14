@@ -39,7 +39,8 @@ Note: Concepts are implemented in isolation. For example, error handling may be 
   - Use `Test Containers` to hold some Postgres test data.
   - Use a custom `web application factory` to switch configs during testing.
   - Use `Playwright` tests.
-    - Use `Playwright` to fake network responses.
+    - Use fake network responses.
+    - Use visual comparisons tests with fault tolerance and mismatch recording.
 ---
 # **Ideas / To do**
 - Add `Jest` tests
