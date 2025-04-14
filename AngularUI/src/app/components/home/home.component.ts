@@ -1,51 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { UsersService } from '../../services/users/users.service';
 import { FormsModule } from '@angular/forms';
-import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule, NgSwitchCase, NgSwitchDefault, NgIf, NgSwitch],
-  template: `
-  <div style="margin-bottom: 15px;">
-    <input type="text" placeholder="username" [(ngModel)]="username" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 250px;">
-  </div>
-  <div>
-    <button (click)="fetchVehicle()" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">
-      Send request
-    </button>
-  </div>
-
-  <div *ngIf="response" [ngSwitch]="response.includes('Error')" id="response-container">
-    <p *ngSwitchCase="true" data-testid="response-message" style="color: red">{{response}}</p>
-    <p *ngSwitchDefault data-testid="response-message" style="color: green">{{response}}</p>
-  </div>
-  `
+  imports: [FormsModule, CommonModule],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
 })
 
-export class HomeComponent {
-  username: string = '';
-  response: string = '';
+export class HomeComponent implements OnInit{
+  username = signal<string>('');
+  response = signal<string>('');
+  error = signal<string>('');
+  timeOfPageLoad = signal<string>('');
 
-  constructor(private usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) { }
+  
+  ngOnInit(): void {
+    this.timeOfPageLoad.set(new Date().toLocaleTimeString('en-GB', {
+      timeZone: 'Europe/London',
+      hour12: false
+    }));
+  }
 
-  fetchVehicle() {
-    if (!this.username.trim()) {
-      this.response = 'Error: username is required for the api call';
+  fetchVehicle(): void {
+    if (!this.username().trim()) {
+      this.error.set('Username is required for the api call');
       return;
     }
-    this.usersService.getVehicleByUser(this.username).subscribe({
+    this.usersService.getVehicleByUser(this.username()).subscribe({
       next: (res) => {
-        this.response = res.message ?? 'Got a response without a message';
+        this.response.set(res.message ?? 'Got a response without a message');
       },
       error: (error) => {
-        console.error('uh oh, error', error);
-        this.response = `Error: ${error.message}`;
+        this.error.set(error.message);
+        console.error(error);
       },
       complete: () => {
-        console.info(`fetchVehicle is done.`)
+        console.info(`getVehicleByUser call is done.`);
       }
     });
   }

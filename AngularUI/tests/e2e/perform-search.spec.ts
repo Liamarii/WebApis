@@ -27,6 +27,6 @@ test.describe('Perform a search', () => {
     await expect(homePage.responseContainer).toBeVisible();
 
     const containerText = await homePage.responseContainer.textContent();
-    expect(containerText).toBe('Error: username is required for the api call');
+    expect(containerText).toBe('Username is required for the api call');
   })
 });

@@ -1,0 +1,18 @@
+<div class="input-group">
+    <input type="text" placeholder="username" [(ngModel)]="username" class="input" />
+</div>
+
+<div>
+    <button (click)="fetchVehicle()" class="button">
+        Send request
+    </button>
+</div>
+
+<div *ngIf="error()" class="error" data-testid="response-message">{{error()}}</div>
+
+<div *ngIf="response()" class="success" data-testid="response-message">{{response()}}</div>
+
+<div data-testid="time-stamp" class="time-stamp">
+    <p>Time added to make visual testing require exclusions</p>
+    {{ timeOfPageLoad() }}
+</div>
