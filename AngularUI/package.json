@@ -7,6 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "unit": "ng test",
+    "e2e": "npx playwright test ./tests/e2e", 
+    "visual": "npx playwright test ./tests/visual",
     "serve:ssr:AngularUI": "node dist/angular-ui/server/server.mjs"
   },
   "private": true,
