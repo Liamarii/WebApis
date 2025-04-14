@@ -1,5 +1,5 @@
 # **What is this**
-This repository is used as a sandbox for demonstrating, learning tool and a reference for myself. 
+This repository is used as a sandbox for demonstrating, learning and a reference for myself. 
 
 The code is not intended to be production-ready, each concept is usually implemented in a single place rather than throughout.
 
