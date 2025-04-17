@@ -1,4 +1,4 @@
-# **What is this**
+# **What is this?**
 This repository is used as a sandbox for demonstrating, learning and a reference for myself. 
 
 The code is not intended to be production-ready, each concept is usually implemented in a single place rather than throughout.
@@ -80,6 +80,9 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Add an auto mapper
 - Add more details to the notes of how to run the angular project.
 - Add Reqnroll tests, Reqnroll replaced Specflow.
+- Add load tests
+  - K6 in the UI
+  - NBomber in the backend.
 ---
 
 # **Prerequisites**
