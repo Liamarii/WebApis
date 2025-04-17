@@ -39,8 +39,9 @@ The code is not intended to be production-ready, each concept is usually impleme
   - Use `Test Containers` to hold some Postgres test data.
   - Use a custom `web application factory` to switch configs during testing.
   - Use `Playwright` tests.
-    - Use fake network responses.
-    - Use visual comparisons tests with fault tolerance and mismatch recording.
+    - Use `mock` network responses.
+    - Use `visual comparisons` tests with fault tolerance and mismatch recording.
+    - Use `traces` for test auditing
 ---
 # **Ideas / To do**
 - Add `Jest` tests
