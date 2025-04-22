@@ -12,7 +12,8 @@
                 policy => policy
                     .WithOrigins(angularUIOrigin)
                     .WithMethods("POST")
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+                    .SetPreflightMaxAge(TimeSpan.FromMinutes(5)));
             });
 
             return services;
