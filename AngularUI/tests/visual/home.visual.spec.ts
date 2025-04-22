@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const filename = 'home-page';
 
 test('homepage visual regression', async ({ page }) => {
-    await page.goto('http://localhost:4200');
+    await page.goto('http://localhost:4200/home');
     await page.waitForLoadState('networkidle');
     await page.locator('[data-testid="time-stamp"]').evaluate(x => x.remove());
     expect(await page.screenshot()).toMatchSnapshot(`screenshots/${filename}.png`);

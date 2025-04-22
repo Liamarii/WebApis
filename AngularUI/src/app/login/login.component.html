@@ -1,0 +1,15 @@
+<div class="login-wrapper">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+        <div class="login-form-input__group">
+            <label for="username" class="login-form__label">Username:</label>
+            <input id="username" type="text" formControlName="username" class="login-form__input" placeholder="anything" />
+        </div>
+
+        <div class="login-form-input__group">
+            <label for="password" class="login-form__label">Password:</label>
+            <input id="password" type="password" formControlName="password" class="login-form__input" placeholder="anything" />
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid" class="login-form__button">Login</button>
+    </form>
+</div>

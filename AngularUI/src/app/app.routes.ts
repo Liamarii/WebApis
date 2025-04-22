@@ -1,9 +1,11 @@
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent, pathMatch: 'full' }
+    { path: '', component: LoginComponent, pathMatch: 'full' },
+    { path: 'home', component: HomeComponent, pathMatch: 'full' }
 ];
 
 @NgModule({

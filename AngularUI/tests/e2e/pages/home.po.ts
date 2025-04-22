@@ -15,7 +15,7 @@ export class HomePage {
   }
   
   async goto(){
-    await this.page.goto('/');
+    await this.page.goto('/home');
     const actualTitle = await this.page.title()
     expect(actualTitle).toBe(this.title);
   }
