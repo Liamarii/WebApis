@@ -17,6 +17,7 @@ public class GivenARequestToGetVehiclesByMakeAsJson(string make) : CustomWebAppl
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
     private GetVehiclesByMakeResponse? _responseContent;
+    private static readonly JsonSerializerOptions _caseInsensitiveDeserializationOptions = new() { PropertyNameCaseInsensitive = true };
 
     [OneTimeSetUp]
     public async Task Setup()
@@ -26,7 +27,7 @@ public class GivenARequestToGetVehiclesByMakeAsJson(string make) : CustomWebAppl
 
         _request = new GetVehiclesByMakeRequest() { Make = make };
         _response = await client.PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"), CancellationToken.None);
-        _responseContent = JsonSerializer.Deserialize<GetVehiclesByMakeResponse>(await _response.Content.ReadAsStringAsync());
+        _responseContent = JsonSerializer.Deserialize<GetVehiclesByMakeResponse>(await _response.Content.ReadAsStringAsync(), _caseInsensitiveDeserializationOptions);
     }
 
     [Test]

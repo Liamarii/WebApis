@@ -16,6 +16,7 @@ public class GetVehicleByUserReturnsStatus429TooManyRequestsResponse(WebApplicat
 {
     private HttpResponseMessage? _httpResponseMessage;
     private ProblemDetails? _response;
+    private static readonly JsonSerializerOptions _caseInsensitiveDeserializationOptions = new() { PropertyNameCaseInsensitive = true };
 
     public async Task InitializeAsync()
     {
@@ -47,7 +48,7 @@ public class GetVehicleByUserReturnsStatus429TooManyRequestsResponse(WebApplicat
         
         _httpResponseMessage = await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
         var responseMessageContent = await _httpResponseMessage.Content.ReadAsStringAsync();
-        _response = JsonSerializer.Deserialize<ProblemDetails>(responseMessageContent);
+        _response = JsonSerializer.Deserialize<ProblemDetails>(responseMessageContent, _caseInsensitiveDeserializationOptions);
     }
 
     public Task DisposeAsync() => Task.CompletedTask;

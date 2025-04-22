@@ -14,6 +14,7 @@ namespace UsersTests.Integration.Api.WireMockTests;
 public class GetVehicleByUserReturnsBadGatewayResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
 {
     private ProblemDetails? _response;
+    private static readonly JsonSerializerOptions _caseInsensitiveDeserializationOptions = new() { PropertyNameCaseInsensitive = true };
 
     public async Task InitializeAsync()
     {
@@ -34,7 +35,7 @@ public class GetVehicleByUserReturnsBadGatewayResponse(WebApplicationFactory<Use
         var request = new GetAvailableVehiclesRequest() { Name = "Bob" };
         var responseMessage = await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
         var responseMessageContent = await responseMessage.Content.ReadAsStringAsync();
-        _response = JsonSerializer.Deserialize<ProblemDetails>(responseMessageContent);
+        _response = JsonSerializer.Deserialize<ProblemDetails>(responseMessageContent, _caseInsensitiveDeserializationOptions);
     }
 
     public Task DisposeAsync() => Task.CompletedTask;
