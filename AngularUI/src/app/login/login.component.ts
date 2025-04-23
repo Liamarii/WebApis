@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  error: string | undefined;
 
   constructor(private form: FormBuilder, private router: Router) {
     this.loginForm = this.form.group({
@@ -22,7 +23,16 @@ export class LoginComponent {
 
   onLogin(): void {
     if (this.loginForm.valid) {
-      this.router.navigate(['/home']);
+      const username: string = this.loginForm.get('username')?.value;
+      const password: string = this.loginForm.get('password')?.value;
+
+      if (username.toLowerCase() === 'liam' && password.toLowerCase() === 'liam') {
+        this.router.navigate(['/home']);
+      }
+      else {
+        console.error('logging error');
+        this.error = 'Try u: liam p: liam';
+      }
     }
   }
 }
