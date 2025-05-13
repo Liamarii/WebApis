@@ -30,6 +30,7 @@ The code is not intended to be production-ready, each concept is usually impleme
 
 - Testing
   - Use integration tests
+  - Use `Reqnroll` BDD tests
   - Use unit tests
     - Use `XUnit`
     - Use `NUnit`
@@ -80,7 +81,6 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Add Authentication
 - Add an auto mapper
 - Add more details to the notes of how to run the angular project.
-- Add Reqnroll tests, Reqnroll replaced Specflow.
 - Add load tests
   - K6 in the UI
   - NBomber in the backend.
