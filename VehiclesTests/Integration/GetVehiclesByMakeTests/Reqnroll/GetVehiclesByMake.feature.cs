@@ -27,7 +27,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Integration/GetVehiclesByMakeTests/Reqnroll", "GetVehiclesByMake", "The Vehicles API returns correct data when filtering vehicles by make.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Integration/GetVehiclesByMakeTests/Reqnroll", "GetVehiclesByMake", "The Vehicles API returns vehicles matching the make requested.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "GetVehiclesByMake.feature"
 #line hidden
@@ -103,7 +103,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Requesting a valid make returns a fitered response.")]
+        [NUnit.Framework.DescriptionAttribute("Requesting a make as protobuf returns only vehicles of that make.")]
         [NUnit.Framework.CategoryAttribute("api")]
         [NUnit.Framework.CategoryAttribute("filtering")]
         [NUnit.Framework.TestCaseAttribute("Honda", null)]
@@ -111,7 +111,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         [NUnit.Framework.TestCaseAttribute("Nissan", null)]
         [NUnit.Framework.TestCaseAttribute("Jeep", null)]
         [NUnit.Framework.TestCaseAttribute("Tesla", null)]
-        public async global::System.Threading.Tasks.Task RequestingAValidMakeReturnsAFiteredResponse_(string make, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task RequestingAMakeAsProtobufReturnsOnlyVehiclesOfThatMake_(string make, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "api",
@@ -123,7 +123,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
             string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Make", make);
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Requesting a valid make returns a fitered response.", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Requesting a make as protobuf returns only vehicles of that make.", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -135,19 +135,64 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 7
- await testRunner.GivenAsync(string.Format("a request is made for \"{0}\"", make), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+ await testRunner.GivenAsync(string.Format("a request is made for \"{0}\" with the \"application/x-protobuf\" header", make), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 8
- await testRunner.WhenAsync("the response is received", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("the response is received and deserialised from \"protobuf\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 9
  await testRunner.ThenAsync("the response status code is \"200\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 10
- await testRunner.AndAsync("the response contains a list of vehicles", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+ await testRunner.AndAsync(string.Format("the response only contains vehicles of the expected \"{0}\"", make), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 11
- await testRunner.AndAsync(string.Format("all vehicles in the response have the make \"{0}\"", make), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Requesting a make as json returns only vehicles of that make.")]
+        [NUnit.Framework.CategoryAttribute("api")]
+        [NUnit.Framework.CategoryAttribute("filtering")]
+        [NUnit.Framework.TestCaseAttribute("Honda", null)]
+        [NUnit.Framework.TestCaseAttribute("Ford", null)]
+        [NUnit.Framework.TestCaseAttribute("Nissan", null)]
+        [NUnit.Framework.TestCaseAttribute("Jeep", null)]
+        [NUnit.Framework.TestCaseAttribute("Tesla", null)]
+        public async global::System.Threading.Tasks.Task RequestingAMakeAsJsonReturnsOnlyVehiclesOfThatMake_(string make, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "api",
+                    "filtering"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Make", make);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Requesting a make as json returns only vehicles of that make.", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 21
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 22
+ await testRunner.GivenAsync(string.Format("a request is made for \"{0}\" with the \"application/json\" header", make), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 23
+ await testRunner.WhenAsync("the response is received and deserialised from \"json\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 24
+ await testRunner.ThenAsync("the response status code is \"200\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 25
+ await testRunner.AndAsync(string.Format("the response only contains vehicles of the expected \"{0}\"", make), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

@@ -13,17 +13,41 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         private GetVehiclesByMakeResponse? _responseContent;
         private const string _endpoint = "api/Vehicles/GetVehiclesByMake";
 
-        [Given(@"a request is made for ""(.*)""")]
-        public async Task GivenARequestIsMadeForMake(string make)
+        [Given(@"a request is made for ""(.*)"" with the ""(.*)"" header")]
+        public async Task GivenARequestIsMadeForMake(string make, string header)
         {
-            _response = await CreateClient().PostAsync(_endpoint, new StringContent(JsonSerializer.Serialize(new GetVehiclesByMakeRequest() { Make = make }), Encoding.UTF8, "application/json"));
-            _responseContent = ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await _response.Content.ReadAsByteArrayAsync());
+            var request = new GetVehiclesByMakeRequest { Make = make };
+            var message = new HttpRequestMessage(HttpMethod.Post, _endpoint)
+            {
+                Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
+            };
+
+            message.Headers.Add("Accept", header);
+            _response = await CreateClient().SendAsync(message);
         }
 
-        [When("the response is received")]
-        public void WhenTheResponseIsReceived()
+        [When(@"the response is received and deserialised from ""(.*)""")]
+        public async Task WhenTheResponseIsReceivedAndDeserialisedAsync(string responseType)
         {
-            Assert.That(_responseContent, Is.Not.Null);
+            if(_response == null)
+            {
+                Assert.Fail("The response was null");
+            }
+            else
+            {
+                var protobufSerialisedResponse = await _response.Content.ReadAsByteArrayAsync();
+
+                if(responseType?.ToLower() == "protobuf")
+                {
+                    _responseContent = ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(protobufSerialisedResponse);
+                }
+                if (responseType?.ToLower() == "json")
+                {
+                    _responseContent = JsonSerializer.Deserialize<GetVehiclesByMakeResponse>(protobufSerialisedResponse);
+                }
+
+                Assert.That(_responseContent, Is.Not.Null);
+            }
         }
 
         [Then(@"the response status code is ""(.*)""")]
@@ -32,15 +56,8 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
             Assert.That((int?) _response?.StatusCode, Is.EqualTo(statusCode));
         }
 
-        [Then("the response contains a list of vehicles")]
-        public void ThenTheResponseContainsAListOfVehicles()
-        {
-            var numberOfReturnedVehicles = _responseContent?.Vehicles.Count() ?? 0;
-            Assert.That(numberOfReturnedVehicles, Is.GreaterThan(0));
-        }
-
-        [Then(@"all vehicles in the response have the make ""(.*)""")]
-        public void ThenAllVehiclesInTheResponseHaveTheMake(string make)
+        [Then(@"the response only contains vehicles of the expected ""(.*)""")]
+        public void ThenTheResponseOnlyContainsVehiclesOfTheExpectedMake(string make)
         {
             var vehiclesMatchingTheGivenMake = _responseContent?.Vehicles.Count(x => x.Make == make);
             Assert.That(vehiclesMatchingTheGivenMake, Is.GreaterThan(0));
