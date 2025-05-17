@@ -1,66 +1,57 @@
 using Reqnroll;
-using System.Text;
-using System.Text.Json;
 using Vehicles.Api.Features.GetVehiclesByMake;
-using Vehicles.Infrastructure.Serialisation;
+using VehiclesTests.Integration.Infrastructure;
 
 namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
 {
     [Binding]
-    public class GetVehiclesByMakeStepDefinitions : CustomWebApplicationFactory<Vehicles.Program>
+    public sealed class GetVehiclesByMakeStepDefinitions(ScenarioContext context) : CustomWebApplicationFactory<Vehicles.Program>
     {
-        private HttpResponseMessage? _response;
-        private GetVehiclesByMakeResponse? _responseContent;
-        private const string _endpoint = "api/Vehicles/GetVehiclesByMake";
+        private HttpClient? _httpClient;
+        private const string _endPoint = "api/Vehicles/GetVehiclesByMake";
+
+        [BeforeScenario]
+        public void BeforeScenario() => _httpClient = CreateClient();
+
+        [AfterScenario]
+        public void AfterScenario() => _httpClient?.Dispose();
 
         [Given(@"a request is made for ""(.*)"" with the ""(.*)"" header")]
-        public async Task GivenARequestIsMadeForMake(string make, string header)
+        public async Task GivenARequestIsMadeForMake(string make, string requestHeader)
         {
-            var request = new GetVehiclesByMakeRequest { Make = make };
-            var message = new HttpRequestMessage(HttpMethod.Post, _endpoint)
-            {
-                Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
-            };
-
-            message.Headers.Add("Accept", header);
-            _response = await CreateClient().SendAsync(message);
+            ArgumentNullException.ThrowIfNull(_httpClient);
+            context["response"] = await _httpClient.SendJsonRequestAsync(_endPoint, new GetVehiclesByMakeRequest { Make = make }, ("Accept", [requestHeader]));
         }
 
         [When(@"the response is received and deserialised from ""(.*)""")]
         public async Task WhenTheResponseIsReceivedAndDeserialisedAsync(string responseType)
         {
-            if(_response == null)
+            var response = (HttpResponseMessage)context["response"];
+
+            if(response.IsSuccessStatusCode)
             {
-                Assert.Fail("The response was null");
+                context["responseContent"] = await response.DeserialiseResponseAsync(responseType);
+                Assert.That(context["responseContent"], Is.Not.Null);
             }
             else
             {
-                var protobufSerialisedResponse = await _response.Content.ReadAsByteArrayAsync();
-
-                if(responseType?.ToLower() == "protobuf")
-                {
-                    _responseContent = ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(protobufSerialisedResponse);
-                }
-                if (responseType?.ToLower() == "json")
-                {
-                    _responseContent = JsonSerializer.Deserialize<GetVehiclesByMakeResponse>(protobufSerialisedResponse);
-                }
-
-                Assert.That(_responseContent, Is.Not.Null);
+                Assert.Fail($"status code returned: {response.StatusCode} when expected a success");
             }
         }
 
         [Then(@"the response status code is ""(.*)""")]
         public void ThenTheResponseStatusCodeIsAsExpected(int statusCode)
         {
-            Assert.That((int?) _response?.StatusCode, Is.EqualTo(statusCode));
+            var response = (HttpResponseMessage)context["response"];
+            Assert.That((int?) response?.StatusCode, Is.EqualTo(statusCode));
         }
 
         [Then(@"the response only contains vehicles of the expected ""(.*)""")]
         public void ThenTheResponseOnlyContainsVehiclesOfTheExpectedMake(string make)
         {
-            var vehiclesMatchingTheGivenMake = _responseContent?.Vehicles.Count(x => x.Make == make);
-            Assert.That(vehiclesMatchingTheGivenMake, Is.GreaterThan(0));
+            var getVehiclesByMakeResponse = (GetVehiclesByMakeResponse) context["responseContent"];
+            var numberOfMatchingVehicles = getVehiclesByMakeResponse.Vehicles.Count(x => x.Make == make);
+            Assert.That(numberOfMatchingVehicles, Is.AtLeast(1));
         }
     }
 }
