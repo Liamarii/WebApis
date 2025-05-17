@@ -2,7 +2,7 @@
 {
     public static class CorsPolicies
     {
-        public static IServiceCollection AddCorsPolicies(this IServiceCollection services, string? angularUIOrigin)
+        public static IServiceCollection AddCorsPolicies(this IServiceCollection services, string angularUIOrigin)
         {
             ArgumentNullException.ThrowIfNull(angularUIOrigin);
 

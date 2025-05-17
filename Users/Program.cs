@@ -10,10 +10,13 @@ public class Program
 
         var config = builder.Configuration;
 
+        var angularOrigin = config.GetSection("Cors")["AngularOrigin"] ?? throw new InvalidOperationException("Cors:AngularOrigin");
+        var vehiclesServiceBase = config.GetSection("Services")["VehiclesService"] ?? throw new InvalidOperationException("Services:VehiclesService");
+
         _ = builder.Services
-            .AddCorsPolicies(config.GetSection("Cors")["AngularOrigin"])
+            .AddCorsPolicies(angularOrigin)
             .AddScalar()
-            .AddServices(config.GetSection("Services")["VehiclesService"])
+            .AddServices(vehiclesServiceBase)
             .AddRateLimiting(window: TimeSpan.FromSeconds(10), permitLimit: 3)
             .AddFaultHandling(FaultHandler.ResiliencePipelines);
 

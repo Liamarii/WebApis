@@ -20,11 +20,10 @@ public static class FaultHandling
         switch (faultHandler)
         {
             case FaultHandler.ResiliencePipelines:
-                services.AddSingleton<IFaultHandling>(provider => new ResiliencePipelineFaultHandling());
+                services.AddSingleton<IFaultHandling>(_ => new ResiliencePipelineFaultHandling());
                 return services;
-            case FaultHandler.PollyRetries:
             default:
-                services.AddSingleton<IFaultHandling>(provider => new PollyFaultHandling());
+                services.AddSingleton<IFaultHandling>(_ => new PollyFaultHandling());
                 return services;
         }
     }

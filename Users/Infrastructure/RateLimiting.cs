@@ -33,7 +33,7 @@ public static class RateLimiting
                 await context.HttpContext.Response.WriteAsJsonAsync(problemDetails, token);
             };
         });
-        
+
         return services;
     }
 }
