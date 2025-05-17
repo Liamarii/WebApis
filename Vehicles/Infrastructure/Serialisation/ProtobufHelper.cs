@@ -11,7 +11,7 @@ namespace Vehicles.Infrastructure.Serialisation
             return stream.ToArray();
         }
 
-        public static T DeserialiseFromProtobuf<T>(byte[] data)
+        public static T? DeserialiseFromProtobuf<T>(byte[] data)
         {
             using var stream = new MemoryStream(data);
             return Serializer.Deserialize<T>(stream);
