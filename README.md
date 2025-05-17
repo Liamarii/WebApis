@@ -10,7 +10,6 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Use `Scalar UI`
 - Use a static logger to get a generic response structure
 - Use a simplified setup with split out infrastructure logic
-- Use snapshot testing.
 - Use error handling
 - Use cancellation tokens
 - Use `protobuf` to serialize and deserialize in a generic way. 
@@ -31,6 +30,10 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Testing
   - Use integration tests
   - Use `Reqnroll` BDD tests
+    - Use `Before & After Scenarios`
+    - Use `Scenario Contexts`
+    - Use `Scenario Outline`
+    - Use `Examples tables`
   - Use unit tests
     - Use `XUnit`
     - Use `NUnit`
@@ -44,6 +47,7 @@ The code is not intended to be production-ready, each concept is usually impleme
     - Use `mock` network responses.
     - Use `visual comparisons` tests with fault tolerance and mismatch recording.
     - Use `traces` for test auditing
+  - Use snapshot testing.
 ---
 # **Ideas / To do**
 - Add `Jest` tests
