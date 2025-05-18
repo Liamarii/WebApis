@@ -34,6 +34,7 @@ The code is not intended to be production-ready, each concept is usually impleme
     - Use `Scenario Contexts`
     - Use `Scenario Outline`
     - Use `Examples tables`
+    - Use `StepArgumentTransformation`
   - Use unit tests
     - Use `XUnit`
     - Use `NUnit`
