@@ -16,11 +16,17 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         [AfterScenario]
         public void AfterScenario() => _httpClient?.Dispose();
 
+        [StepArgumentTransformation("(Ford|Nissan|Jeep|Tesla|Honda)")]
+        public static GetVehiclesByMakeRequest TransformMakeStringToGetVehiclesByMakeRequest(string make)
+        {
+            return new() { Make = make };
+        }
+
         [Given(@"a request is made for ""(.*)"" with the ""(.*)"" header")]
-        public async Task GivenARequestIsMadeForMake(string make, string requestHeader)
+        public async Task GivenARequestIsMadeForMake(GetVehiclesByMakeRequest getVehiclesByMakeRequest, string requestHeader)
         {
             ArgumentNullException.ThrowIfNull(_httpClient);
-            context["response"] = await _httpClient.SendJsonRequestAsync(_endPoint, new GetVehiclesByMakeRequest { Make = make }, ("Accept", [requestHeader]));
+            context["response"] = await _httpClient.SendJsonRequestAsync(_endPoint, getVehiclesByMakeRequest, ("Accept", [requestHeader]));
         }
 
         [When(@"the response is received and deserialised from ""(.*)""")]
@@ -49,7 +55,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         [Then(@"the response only contains vehicles of the expected ""(.*)""")]
         public void ThenTheResponseOnlyContainsVehiclesOfTheExpectedMake(string make)
         {
-            var getVehiclesByMakeResponse = (GetVehiclesByMakeResponse) context["responseContent"];
+            var getVehiclesByMakeResponse = (GetVehiclesByMakeResponse)context["responseContent"];
             var numberOfMatchingVehicles = getVehiclesByMakeResponse.Vehicles.Count(x => x.Make == make);
             Assert.That(numberOfMatchingVehicles, Is.AtLeast(1));
         }
