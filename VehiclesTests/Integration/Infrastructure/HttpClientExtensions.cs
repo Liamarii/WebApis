@@ -27,8 +27,7 @@ namespace VehiclesTests.Integration.Infrastructure
             }
 
             return await httpClient
-                .SendAsync(requestMessage)
-                .ConfigureAwait(false);
+                .SendAsync(requestMessage);
         }
 
         public static async Task<GetVehiclesByMakeResponse?> DeserialiseResponseAsync(this HttpResponseMessage httpResponseMessage, string responseType)
