@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using Users.Infrastructure;
-using Users.Infrastructure.FaultHandlers;
 using Users.Services.Users;
 using Users.Services.Vehicles;
 
@@ -40,9 +39,7 @@ namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
             {
                 throw new InvalidOperationException($"You need to setup the http client first with {nameof(CreateHttpClient)}");
             }
-
-            IVehicleService vehicleService = new VehiclesService(_httpClient, ResiliencePipelines.DefaultResiliencePipeline);
-            return new UsersService(vehicleService);
+            return new UsersService(new VehiclesService(_httpClient, ResiliencePipelineProvider.GetDefaultPipeline()));
         }
 
         private class MockHttpMessageHandler(string response, HttpStatusCode statusCode) : HttpMessageHandler

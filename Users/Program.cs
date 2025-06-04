@@ -1,7 +1,4 @@
-using Polly;
-using ProtoBuf.Meta;
 using Users.Infrastructure;
-using Users.Infrastructure.FaultHandlers;
 
 namespace Users;
 
@@ -20,7 +17,6 @@ public class Program
         _ = builder.Services
             .AddCorsPolicies(angularOrigin)
             .AddScalar()
-            .AddSingleton(ResiliencePipelines.DefaultResiliencePipeline)
             .AddServices(vehiclesServiceBase)
             .AddRateLimiting(window: TimeSpan.FromSeconds(10), permitLimit: 3);
 
