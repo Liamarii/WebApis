@@ -5,6 +5,7 @@ using Users.Infrastructure.FaultHandlers;
 
 namespace Users;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1102:Make class static", Justification = "Not static for the WabApplicationFactory tests")]
 public class Program
 {
     private static void Main(string[] args)
