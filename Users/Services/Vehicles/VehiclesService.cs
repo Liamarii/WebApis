@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using Users.Exceptions;
-using Users.Infrastructure;
+﻿using Polly;
 using Users.Services.Vehicles.Models;
 
 namespace Users.Services.Vehicles;
@@ -11,23 +8,25 @@ public interface IVehicleService
     public Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest make, CancellationToken cancellationToken);
 }
 
-public class VehiclesService(HttpClient httpClient, IFaultHandling faultHandling) : IVehicleService
+public class VehiclesService(HttpClient httpClient, ResiliencePipeline<HttpResponseMessage> resiliencePipeline) : IVehicleService
 {
     private const string _url = "/api/Vehicles/GetVehiclesByMake";
     private readonly HttpClient _httpClient = httpClient;
 
-    public async Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest request, CancellationToken cancellationToken)
+    public async Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest getVehiclesByMakeRequest, CancellationToken cancellationToken)
     {
+        var context = ResilienceContextPool.Shared.Get(cancellationToken);
 
-            Task<HttpResponseMessage> httpRequest(CancellationToken cancellationToken) => _httpClient.PostAsync(_url, new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), cancellationToken);
-            HttpResponseMessage responseMessage = await faultHandling.ExponentialBackoffAsync(httpRequest, cancellationToken);
-
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                Logs.Add.ErrorLog($"{this}: got a status code {responseMessage.StatusCode} when trying to perform {nameof(GetVehiclesByMake)} with reason {responseMessage.ReasonPhrase}");
-                throw new ServiceUnavailableException($"Unable to call the {nameof(VehiclesService)}");
-            }
+        try
+        {
+            HttpResponseMessage responseMessage = await resiliencePipeline
+                .ExecuteAsync(async (args) => await _httpClient.PostAsJsonAsync(_url, getVehiclesByMakeRequest, args.CancellationToken), context);
 
             return ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await responseMessage.Content.ReadAsByteArrayAsync(cancellationToken));
         }
+        finally
+        {
+            ResilienceContextPool.Shared.Return(context);
+        }
     }
+}

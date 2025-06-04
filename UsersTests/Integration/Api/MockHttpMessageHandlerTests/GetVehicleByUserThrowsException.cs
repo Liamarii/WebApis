@@ -14,7 +14,6 @@ public class GetVehicleByUserThrowsException(TestHelper testHelper) : IClassFixt
 
     public async Task InitializeAsync()
     {
-
         UsersService usersService = _testHelper
             .CreateMockHttpMessageHandler("Uh oh", HttpStatusCode.BadGateway, new InvalidCastException("Service Gone!"))
             .CreateHttpClient()
@@ -28,11 +27,11 @@ public class GetVehicleByUserThrowsException(TestHelper testHelper) : IClassFixt
     public void ReturnsTheExpectedResponseType() => Assert.IsType<ObjectResult>(_response?.Result);
 
     [Fact]
-    public void ReturnsTheExpectedStatusCode() => Assert.Equal(StatusCodes.Status500InternalServerError, (_response?.Result as ObjectResult)?.StatusCode);
+    public void ReturnsTheExpectedStatusCode() => Assert.Equal(StatusCodes.Status502BadGateway, (_response?.Result as ObjectResult)?.StatusCode);
 
     [Fact]
-    public void ReturnsTheExpectedMessage() => Assert.Equal("An internal server error occurred while processing your request.", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Detail);
+    public void ReturnsTheExpectedMessage() => Assert.Equal("External service is unavailable.", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Detail);
 
     [Fact]
-    public void ReturnsTheExpectedTitle() => Assert.Equal("Internal server error", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Title);
+    public void ReturnsTheExpectedTitle() => Assert.Equal("Bad Gateway", ((_response?.Result as ObjectResult)?.Value as ProblemDetails)?.Title);
 }

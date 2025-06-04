@@ -41,8 +41,7 @@ namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
                 throw new InvalidOperationException($"You need to setup the http client first with {nameof(CreateHttpClient)}");
             }
 
-            IFaultHandling faultHandling = new PollyFaultHandling();
-            IVehicleService vehicleService = new VehiclesService(_httpClient, faultHandling);
+            IVehicleService vehicleService = new VehiclesService(_httpClient, ResiliencePipelines.DefaultResiliencePipeline);
             return new UsersService(vehicleService);
         }
 

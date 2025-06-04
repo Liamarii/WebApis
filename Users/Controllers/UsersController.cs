@@ -26,26 +26,21 @@ public class UsersController(IUsersService usersService) : ControllerBase
             GetAvailableVehiclesResponse response = await usersService.GetAvailableVehicles(getVehicleByUserRequest, cancellationToken);
             return Ok(response);
         }
-
         catch (ServiceUnavailableException ex)
         {
             Logs.Add.InfoLog($"Vehicle service was down when called at {DateTime.Now}: " + ex.Message);
             return Problem(
+                detail: "External service is unavailable.",
                 statusCode: StatusCodes.Status502BadGateway,
-                title: "Bad Gateway",
-                detail: "External service is unavailable."
-            );
+                title: "Bad Gateway");
         }
-
         catch (Exception ex)
         {
             Logs.Add.ErrorLog($"Exception surfaced in: {this} method: {nameof(GetVehicleByUser)} of: {ex}");
-            
             return Problem(
+               detail: "An internal server error occurred while processing your request.",
                statusCode: StatusCodes.Status500InternalServerError,
-               title: "Internal server error",
-               detail: "An internal server error occurred while processing your request."
-           );
+               title: "Internal server error");
         }
     }
 }
