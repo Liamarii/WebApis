@@ -17,8 +17,7 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Use feature structure
 - Use custom exception handling
 - Use standardized `ProblemDetails` error responses (RFC 7807)
-- Use `Polly` for fault handling.
-- Use `Resilience Pipeline` for fault handling. 
+- Use `Polly Resilience Pipelines` for fault handling. 
 - Use `Fluent NHibernate` to read in real data from a Postgres database.
 - Use `LINQ` or LINQ style queries.
 - Use `IOptions` configuration sections.
