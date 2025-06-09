@@ -5,13 +5,17 @@ using VehiclesTests.Integration.Infrastructure;
 namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
 {
     [Binding]
-    public sealed class GetVehiclesByMakeStepDefinitions(ScenarioContext context) : CustomWebApplicationFactory<Vehicles.Program>
+    public sealed class GetVehiclesByMakeStepDefinitions(ScenarioContext context) : WebApplicationFactoryWithFakeDatabase<Vehicles.Program>
     {
         private HttpClient? _httpClient;
         private const string _endPoint = "api/Vehicles/GetVehiclesByMake";
 
         [BeforeScenario]
-        public void BeforeScenario() => _httpClient = CreateClient();
+        public async Task BeforeScenarioAsync()
+        {
+            await InitializeAsync(GetVehiclesByMakeTestData.CreateTableSql, GetVehiclesByMakeTestData.InsertDataSql);
+            _httpClient = CreateClient();
+        }
 
         [AfterScenario]
         public void AfterScenario() => _httpClient?.Dispose();

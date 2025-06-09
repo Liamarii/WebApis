@@ -12,7 +12,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 [TestFixture("Jeep")]
 [TestFixture("Tesla")]
 [Parallelizable]
-public class GivenARequestToGetVehiclesByMakeAsJson(string make) : CustomWebApplicationFactory<Vehicles.Program>
+public class GivenARequestToGetVehiclesByMakeAsJson(string make) : WebApplicationFactoryWithFakeDatabase<Vehicles.Program>
 {
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
@@ -22,6 +22,8 @@ public class GivenARequestToGetVehiclesByMakeAsJson(string make) : CustomWebAppl
     [OneTimeSetUp]
     public async Task Setup()
     {
+        await InitializeAsync(GetVehiclesByMakeTestData.CreateTableSql, GetVehiclesByMakeTestData.InsertDataSql);
+
         HttpClient client = CreateClient();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

@@ -12,7 +12,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
 [TestFixture("Jeep")]
 [TestFixture("Tesla")]
 [Parallelizable]
-public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : CustomWebApplicationFactory<Vehicles.Program>
+public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : WebApplicationFactoryWithFakeDatabase<Vehicles.Program>
 {
     private GetVehiclesByMakeRequest? _request;
     private HttpResponseMessage? _response;
@@ -21,6 +21,7 @@ public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : CustomWebApp
     [OneTimeSetUp]
     public async Task Setup()
     {
+        await InitializeAsync(GetVehiclesByMakeTestData.CreateTableSql, GetVehiclesByMakeTestData.InsertDataSql);
         _request = new GetVehiclesByMakeRequest() { Make = make };
         _response = await CreateClient().PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
         _responseContent = ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await _response.Content.ReadAsByteArrayAsync());

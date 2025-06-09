@@ -14,13 +14,13 @@ namespace Vehicles.Infrastructure.Persistence
 
     public class NHibernateDatabase(IOptions<DatabaseConfig> options, Assembly mappingAssembly) : INHibernateDatabase
     {
-        private readonly ISessionFactory sessionFactory = Fluently
+        private readonly ISessionFactory _sessionFactory = Fluently
             .Configure()
             .Database(PostgreSQLConfiguration.Standard
             .ConnectionString(options.Value.DefaultConnection))
             .Mappings(m => m.FluentMappings.AddFromAssembly(mappingAssembly))
             .BuildSessionFactory();
 
-        public NHibernate.ISession OpenSession() => sessionFactory.OpenSession();
+        public NHibernate.ISession OpenSession() => _sessionFactory.OpenSession();
     }
 }
