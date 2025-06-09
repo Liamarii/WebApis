@@ -28,6 +28,8 @@ The code is not intended to be production-ready, each concept is usually impleme
 
 - Testing
   - Use integration tests
+    - Use `WebApplicationFactory` to call the service endpoints
+    - Use `WebApplicationFactory` with a way to swap out the real database for a test one.
   - Use `Reqnroll` BDD tests
     - Use `Before & After Scenarios`
     - Use `Scenario Contexts`
@@ -65,6 +67,7 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Add an anti-corruption layer
 - Add Selenium tests
 - Add Hurl tests
+- Add CDC contract tests
 - Add caching:
   - Add `Redis` cache
   - Add In-Memory cache
@@ -77,7 +80,6 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Add middleware
 - Add events
 - Add a static analyzer with auto-fix
-- Add a circuit breaker
 - Add Swagger docs
 - Add HATEOAS
 - Add PDF generator
@@ -101,6 +103,5 @@ The code is not intended to be production-ready, each concept is usually impleme
 # **Notes**
 - To shutdown Ubuntu which gets left open even after exiting Docker Desktop: ```wsl --shutdown```
 - The VehiclesTests project uses a custom web app factory to change the environment which will point to a test database.
-- The API production code currently gets data from a real Postgres database I have running locally which will be swapped out at some point.
 - The API tests which pull data out of a database use a TestContainer docker image, not the real database [Postgres Docker images](https://hub.docker.com/_/postgres)
 - The UI has some Playwright tests in which I run using the Playwright test for VSCode extension.
