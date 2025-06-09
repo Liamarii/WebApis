@@ -15,10 +15,10 @@ namespace VehiclesTests.Unit.Data.VehiclesRepositoryTests
         public WhenGettingVehicles()
         {
             List<Vehicle> vehicles =[
-                new(){ Id = 1,Vin = "1HGCM82633A123456", Make = "Honda", Model = "Egg", Year = 2020}, 
-                new(){ Id = 2,Vin = "1FADP3F24JL123457", Make = "Ford", Model = "Fastcar", Year = 2020}, 
-                new(){ Id = 3,Vin = "3N1AB7AP8HY123458", Make = "Nissan", Model = "Bagel", Year = 2021}, 
-                new(){ Id = 4,Vin = "1C4RJFBG4FC123459", Make = "Jeep", Model = "Spongebob", Year = 2022}, 
+                new(){ Id = 1,Vin = "1HGCM82633A123456", Make = "Honda", Model = "Egg", Year = 2020},
+                new(){ Id = 2,Vin = "1FADP3F24JL123457", Make = "Ford", Model = "Fastcar", Year = 2020},
+                new(){ Id = 3,Vin = "3N1AB7AP8HY123458", Make = "Nissan", Model = "Bagel", Year = 2021},
+                new(){ Id = 4,Vin = "1C4RJFBG4FC123459", Make = "Jeep", Model = "Spongebob", Year = 2022},
                 new(){ Id = 5,Vin = "5YJ3E1EA7KF123460", Make = "Tesla", Model = "Model Why", Year = 2022}];
 
             Mock<ISession> mockSession = new();

@@ -136,6 +136,5 @@ namespace VehiclesTests.Unit.Api
 
         [Test]
         public void TheReturnedGuidMatchesTheInputGuid() => Assert.That(_input!.GuidValue, Is.EqualTo(_output!.GuidValue));
-
     }
 }

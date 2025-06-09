@@ -7,7 +7,7 @@ namespace Users.Infrastructure
     public static class ResiliencePipelineProvider
     {
         private static readonly ResiliencePipeline<HttpResponseMessage> _pipeline;
-        
+
         static ResiliencePipelineProvider()
         {
             _pipeline = new ResiliencePipelineBuilder<HttpResponseMessage>()
