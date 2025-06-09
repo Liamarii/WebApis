@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using DotNet.Testcontainers.Builders;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
@@ -6,7 +7,7 @@ using Testcontainers.PostgreSql;
 
 namespace VehiclesTests.Integration;
 
-public class WebApplicationFactoryWithFakeDatabase<TStartup> : WebApplicationFactory<TStartup>, IAsyncDisposable where TStartup : class
+public class WebApplicationFactoryWithFakeDatabase<TStartClass> : WebApplicationFactory<TStartClass>, IAsyncDisposable where TStartClass : class
 {
     private static PostgreSqlContainer? _container;
     private static bool _containerStarted;
@@ -15,17 +16,21 @@ public class WebApplicationFactoryWithFakeDatabase<TStartup> : WebApplicationFac
     public WebApplicationFactoryWithFakeDatabase()
     {
         _container ??= new PostgreSqlBuilder()
-                .WithImage("postgres:15")
-                .WithDatabase("testdb")
-                .WithUsername("testuser")
-                .WithPassword("testpassword")
-                .WithName("integrationTests")
-                .Build();
+            .WithImage("postgres:15")
+            .WithDatabase("testdb")
+            .WithUsername("testuser")
+            .WithPassword("testpassword")
+            .WithCleanUp(true)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+            .Build();
     }
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
+        if (_container == null) throw new InvalidOperationException("Container is not running.");
+
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
+        Environment.SetEnvironmentVariable("TEST_CREDENTIALS", $"{_container.GetConnectionString()};Port={_container.GetMappedPublicPort(5432)}");
 
         builder.ConfigureAppConfiguration((_, config) =>
         {
@@ -46,6 +51,8 @@ public class WebApplicationFactoryWithFakeDatabase<TStartup> : WebApplicationFac
     {
         if (_container == null) throw new InvalidOperationException("Container is not running.");
 
+        await _container.StartAsync();
+
         lock (_lock)
         {
             if (!_containerStarted)
@@ -65,7 +72,8 @@ public class WebApplicationFactoryWithFakeDatabase<TStartup> : WebApplicationFac
     {
         if (_container == null) throw new InvalidOperationException("Container is not running.");
 
-        await using var conn = new NpgsqlConnection(_container.GetConnectionString());
+        var connStr = _container.GetConnectionString();
+        await using var conn = new NpgsqlConnection(connStr);
         await conn.OpenAsync();
 
         foreach (var sqlQuery in sqlQueries)

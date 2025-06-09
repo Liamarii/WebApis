@@ -12,14 +12,22 @@ namespace Vehicles.Infrastructure.Persistence
         public NHibernate.ISession OpenSession();
     }
 
-    public class NHibernateDatabase(IOptions<DatabaseConfig> options, Assembly mappingAssembly) : INHibernateDatabase
+    public class NHibernateDatabase : INHibernateDatabase
     {
-        private readonly ISessionFactory _sessionFactory = Fluently
-            .Configure()
-            .Database(PostgreSQLConfiguration.Standard
-            .ConnectionString(options.Value.DefaultConnection))
-            .Mappings(m => m.FluentMappings.AddFromAssembly(mappingAssembly))
-            .BuildSessionFactory();
+        private readonly ISessionFactory _sessionFactory;
+
+        public NHibernateDatabase(IOptions<DatabaseConfig> options, Assembly mappingAssembly)
+        {
+            string? connectionString = (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing") ?
+            Environment.GetEnvironmentVariable("TEST_CREDENTIALS") : options.Value.DefaultConnection;
+
+            _sessionFactory = Fluently
+                .Configure()
+                .Database(PostgreSQLConfiguration.Standard
+                .ConnectionString(connectionString))
+                .Mappings(m => m.FluentMappings.AddFromAssembly(mappingAssembly))
+                .BuildSessionFactory();
+        }
 
         public NHibernate.ISession OpenSession() => _sessionFactory.OpenSession();
     }
