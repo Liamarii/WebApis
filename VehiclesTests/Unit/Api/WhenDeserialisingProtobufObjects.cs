@@ -5,7 +5,7 @@ using Vehicles.Infrastructure.Serialisation;
 namespace VehiclesTests.Unit.Api
 {
     [Parallelizable]
-    public class WhenDeserialisingProtobufObjects
+    public class WhenDeserializingProtobufObjects
     {
         [ProtoContract]
         private class DataTypesClass
