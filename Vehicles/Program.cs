@@ -25,6 +25,7 @@ public class Program
 
         if (app.Environment.IsDevelopment())
         {
+            app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(x => x.EnableTryItOutByDefault());
         }

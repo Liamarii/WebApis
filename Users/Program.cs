@@ -31,6 +31,7 @@ public class Program
 
         if (app.Environment.IsDevelopment())
         {
+            app.UseDeveloperExceptionPage();
             app.UseScalar();
         }
 
