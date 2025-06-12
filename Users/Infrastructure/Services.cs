@@ -1,4 +1,5 @@
-﻿using Users.Services.Users;
+﻿using Polly.Registry;
+using Users.Services.Users;
 using Users.Services.Vehicles;
 
 namespace Users.Infrastructure;
@@ -12,8 +13,9 @@ public static class Services
         services.AddHttpClient(nameof(IVehicleService), client => client.BaseAddress = new Uri(vehiclesServiceBase));
         services.AddScoped<IVehicleService, VehiclesService>(sp =>
         {
+            var resiliencePipelineProvider = sp.GetRequiredService<ResiliencePipelineProvider<string>>();
             var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient(nameof(IVehicleService));
-            return new VehiclesService(httpClient, ResiliencePipelineProvider.GetDefaultPipeline());
+            return new VehiclesService(httpClient, resiliencePipelineProvider);
         });
 
         services.AddScoped<IUsersService, UsersService>();

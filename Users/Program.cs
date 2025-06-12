@@ -1,3 +1,4 @@
+using Polly;
 using Users.Infrastructure;
 
 namespace Users;
@@ -18,8 +19,8 @@ public class Program
             .AddCorsPolicies(angularOrigin)
             .AddScalar()
             .AddServices(vehiclesServiceBase)
-            .AddRateLimiting(window: TimeSpan.FromSeconds(10), permitLimit: 3);
-
+            .AddRateLimiting(window: TimeSpan.FromSeconds(10), permitLimit: 3)
+            .AddResiliencePipeline("defaultPipeline", (ResiliencePipelineBuilder<HttpResponseMessage> rpb) => ResiliencePipelineProvider.ConfigureDefaultPipeline(rpb));
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
         builder.Services.AddControllers();
 

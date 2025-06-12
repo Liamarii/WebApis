@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using NSubstitute;
+using Polly.Registry;
+using System.Net;
 using Users.Infrastructure;
 using Users.Services.Users;
 using Users.Services.Vehicles;
@@ -39,7 +41,14 @@ namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
             {
                 throw new InvalidOperationException($"You need to setup the http client first with {nameof(CreateHttpClient)}");
             }
-            return new UsersService(new VehiclesService(_httpClient, ResiliencePipelineProvider.GetDefaultPipeline()));
+
+            var resiliencePipelineProvider = Substitute.For<ResiliencePipelineProvider<string>>();
+            resiliencePipelineProvider
+                .GetPipeline<HttpResponseMessage>("defaultPipeline")
+                .Returns(ResiliencePipelineProvider.GetDefaultPipeline());
+
+            var vehicleService = new VehiclesService(_httpClient, resiliencePipelineProvider);
+            return new UsersService(vehicleService);
         }
 
         private class MockHttpMessageHandler(string response, HttpStatusCode statusCode) : HttpMessageHandler
