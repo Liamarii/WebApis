@@ -4,12 +4,12 @@ using Users.Services.Vehicles.Models;
 
 namespace Users.Services.Vehicles;
 
-public interface IVehicleService
+public interface IVehiclesService
 {
     public Task<GetVehiclesByMakeResponse> GetVehiclesByMake(GetVehiclesByMakeRequest make, CancellationToken cancellationToken);
 }
 
-public class VehiclesService(HttpClient httpClient, ResiliencePipelineProvider<string> resiliencePipelineProvider) : IVehicleService
+public class VehiclesService(HttpClient httpClient, ResiliencePipelineProvider<string> resiliencePipelineProvider) : IVehiclesService
 {
     private const string _url = "/api/Vehicles/GetVehiclesByMake";
     private readonly HttpClient _httpClient = httpClient;

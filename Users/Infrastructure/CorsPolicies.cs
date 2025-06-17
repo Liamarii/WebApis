@@ -2,9 +2,9 @@
 {
     public static class CorsPolicies
     {
-        public static IServiceCollection AddCorsPolicies(this IServiceCollection services, string angularUIOrigin)
+        public static IServiceCollection AddCorsPolicies(this IServiceCollection services, IConfiguration configuration)
         {
-            ArgumentNullException.ThrowIfNull(angularUIOrigin);
+            var angularUIOrigin = configuration.GetSection("Cors")["AngularOrigin"] ?? throw new InvalidOperationException("Cors:AngularOrigin");
 
             services.AddCors(options =>
             {

@@ -1,24 +1,22 @@
-﻿using Polly.Registry;
-using Users.Services.Users;
+﻿using Users.Services.Users;
 using Users.Services.Vehicles;
 
 namespace Users.Infrastructure;
 
 public static class Services
 {
-    public static IServiceCollection AddServices(this IServiceCollection services, string vehiclesServiceBase)
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        ArgumentNullException.ThrowIfNull(vehiclesServiceBase);
-
-        services.AddHttpClient(nameof(IVehicleService), client => client.BaseAddress = new Uri(vehiclesServiceBase));
-        services.AddScoped<IVehicleService, VehiclesService>(sp =>
-        {
-            var resiliencePipelineProvider = sp.GetRequiredService<ResiliencePipelineProvider<string>>();
-            var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient(nameof(IVehicleService));
-            return new VehiclesService(httpClient, resiliencePipelineProvider);
+        services.AddHttpClient<IVehiclesService, VehiclesService>((sp, client) => {
+            var vehiclesService = sp
+            .GetRequiredService<IConfiguration>()
+            .GetSection("Services")["VehiclesService"] ?? throw new InvalidOperationException("Services:VehiclesService");
+            
+            client.BaseAddress = new Uri(vehiclesService);
         });
 
         services.AddScoped<IUsersService, UsersService>();
+
         return services;
     }
 }

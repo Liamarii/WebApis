@@ -10,19 +10,13 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var config = builder.Configuration;
-
-        var angularOrigin = config.GetSection("Cors")["AngularOrigin"] ?? throw new InvalidOperationException("Cors:AngularOrigin");
-        var vehiclesServiceBase = config.GetSection("Services")["VehiclesService"] ?? throw new InvalidOperationException("Services:VehiclesService");
-
         _ = builder.Services
-            .AddCorsPolicies(angularOrigin)
+            .AddCorsPolicies(builder.Configuration)
             .AddScalar()
-            .AddServices(vehiclesServiceBase)
+            .AddServices()
             .AddRateLimiting(window: TimeSpan.FromSeconds(10), permitLimit: 3)
-            .AddResiliencePipeline("defaultPipeline", (ResiliencePipelineBuilder<HttpResponseMessage> rpb) => ResiliencePipelineProvider.ConfigureDefaultPipeline(rpb));
-        builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-        builder.Services.AddControllers();
+            .AddResiliencePipeline("defaultPipeline", (ResiliencePipelineBuilder<HttpResponseMessage> rpb) => ResiliencePipelineProvider.ConfigureDefaultPipeline(rpb))
+            .AddControllers();
 
         var app = builder.Build();
 

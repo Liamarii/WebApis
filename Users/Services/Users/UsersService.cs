@@ -9,7 +9,7 @@ public interface IUsersService
     public Task<GetAvailableVehiclesResponse> GetAvailableVehicles(GetAvailableVehiclesRequest request, CancellationToken cancellationToken);
 }
 
-public class UsersService(IVehicleService vehicleService) : IUsersService
+public class UsersService(IVehiclesService vehicleService) : IUsersService
 {
     public async Task<GetAvailableVehiclesResponse> GetAvailableVehicles(GetAvailableVehiclesRequest request, CancellationToken cancellationToken)
     {

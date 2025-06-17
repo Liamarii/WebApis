@@ -22,7 +22,7 @@ namespace UsersTests.Unit.Services
         public async Task PlayingAroundWithMoq(string name, string make, string model)
         {
             // Arrange
-            Mock<IVehicleService>? mockVehicleService = new();
+            Mock<IVehiclesService>? mockVehicleService = new();
             mockVehicleService
                 .Setup(x => x.GetVehiclesByMake(It.IsAny<GetVehiclesByMakeRequest>(), CancellationToken.None))
                 .ReturnsAsync(new GetVehiclesByMakeResponse() { Vehicles = [new() { Make = make, Model = model }] });
@@ -42,7 +42,7 @@ namespace UsersTests.Unit.Services
         public async Task PlayingAroundWithNSubstitute(string name, string make, string model)
         {
             // Arrange
-            IVehicleService mockVehicleService = Substitute.For<IVehicleService>();
+            IVehiclesService mockVehicleService = Substitute.For<IVehiclesService>();
             mockVehicleService.GetVehiclesByMake(Arg.Any<GetVehiclesByMakeRequest>(), CancellationToken.None)
                 .Returns(new GetVehiclesByMakeResponse() { Vehicles = [new() { Make = make, Model = model }] });
 
