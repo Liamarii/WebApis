@@ -1,6 +1,5 @@
 ﻿using System.Net;
-using System.Text;
-using System.Text.Json;
+using System.Net.Http.Json;
 using Vehicles.Api.Features.GetVehiclesByMake;
 using Vehicles.Infrastructure.Serialisation;
 
@@ -23,7 +22,7 @@ public class GivenARequestToGetVehiclesByMakeAsBytes(string make) : WebApplicati
     {
         await InitializeAsync(GetVehiclesByMakeTestData.CreateTableSql, GetVehiclesByMakeTestData.InsertDataSql);
         _request = new GetVehiclesByMakeRequest() { Make = make };
-        _response = await CreateClient().PostAsync("api/Vehicles/GetVehiclesByMake", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
+        _response = await CreateClient().PostAsJsonAsync("api/Vehicles/GetVehiclesByMake", _request);
         _responseContent = ProtobufHelper.DeserialiseFromProtobuf<GetVehiclesByMakeResponse>(await _response.Content.ReadAsByteArrayAsync());
     }
 
