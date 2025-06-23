@@ -5,13 +5,13 @@ using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Testcontainers.PostgreSql;
 
-namespace VehiclesTests.Integration;
+namespace VehiclesTests.Integration.Infrastructure;
 
 public class WebApplicationFactoryWithFakeDatabase<TStartClass> : WebApplicationFactory<TStartClass>, IAsyncDisposable where TStartClass : class
 {
     private static PostgreSqlContainer? _container;
     private static bool _containerStarted;
-    private static readonly Lock _lock = new();
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
     public WebApplicationFactoryWithFakeDatabase()
     {
@@ -51,15 +51,19 @@ public class WebApplicationFactoryWithFakeDatabase<TStartClass> : WebApplication
     {
         if (_container == null) throw new InvalidOperationException("Container is not running.");
 
-        await _container.StartAsync();
+        await _semaphore.WaitAsync();
 
-        lock (_lock)
+        try
         {
             if (!_containerStarted)
             {
-                _container.StartAsync().GetAwaiter().GetResult();
+                await _container.StartAsync();
                 _containerStarted = true;
             }
+        }
+        finally
+        {
+            _semaphore.Release();
         }
 
         if (sqlQueries != null)

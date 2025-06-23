@@ -3,8 +3,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Vehicles.Api.Features.GetVehiclesByMake;
+using VehiclesTests.Integration.Infrastructure;
 
-namespace VehiclesTests.Integration.GetVehiclesByMakeTests;
+namespace VehiclesTests.Integration.ContainerDatabase.GetVehiclesByMakeTests;
 
 [TestFixture("Honda")]
 [TestFixture("Ford")]

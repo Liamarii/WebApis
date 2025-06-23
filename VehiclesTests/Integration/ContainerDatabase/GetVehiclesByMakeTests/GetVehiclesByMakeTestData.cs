@@ -1,4 +1,4 @@
-﻿namespace VehiclesTests.Integration.GetVehiclesByMakeTests
+﻿namespace VehiclesTests.Integration.ContainerDatabase.GetVehiclesByMakeTests
 {
     internal static class GetVehiclesByMakeTestData
     {

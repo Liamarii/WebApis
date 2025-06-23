@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 
-namespace VehiclesTests.Integration;
+namespace VehiclesTests.Integration.Infrastructure;
 
 public class WebApplicationFactoryWithoutFakeDatabase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {

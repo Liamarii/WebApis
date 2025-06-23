@@ -1,8 +1,9 @@
 using Reqnroll;
 using Vehicles.Api.Features.GetVehiclesByMake;
+using VehiclesTests.Integration.ContainerDatabase.GetVehiclesByMakeTests;
 using VehiclesTests.Integration.Infrastructure;
 
-namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
+namespace VehiclesTests.Integration.ReqnrollAcceptance.GetVehiclesByMakeTests
 {
     [Binding]
     public sealed class GetVehiclesByMakeStepDefinitions(ScenarioContext context) : WebApplicationFactoryWithFakeDatabase<Vehicles.Program>

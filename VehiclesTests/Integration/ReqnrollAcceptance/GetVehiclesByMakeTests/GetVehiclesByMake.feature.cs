@@ -11,7 +11,7 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
+namespace VehiclesTests.Integration.ReqnrollAcceptance.GetVehiclesByMakeTests
 {
     
     
@@ -27,7 +27,7 @@ namespace VehiclesTests.Integration.GetVehiclesByMakeTests.Reqnroll
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Integration/GetVehiclesByMakeTests/Reqnroll", "GetVehiclesByMake", "The Vehicles API returns vehicles matching the make requested.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Integration/ReqnrollAcceptance/GetVehiclesByMakeTests", "GetVehiclesByMake", "The Vehicles API returns vehicles matching the make requested.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "GetVehiclesByMake.feature"
 #line hidden
