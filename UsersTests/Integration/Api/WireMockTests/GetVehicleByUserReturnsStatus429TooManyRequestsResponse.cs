@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Users.Services;
 using Users.Services.Users.Models;
-using Users.Services.Vehicles.Models;
+using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 
 namespace UsersTests.Integration.Api.WireMockTests;
 
-[Collection("WireMock Tests")]
-public class GetVehicleByUserReturnsStatus429TooManyRequestsResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
+public class GetVehicleByUserReturnsStatus429TooManyRequestsResponse(
+    WebApplicationFactory<Users.Program> factory,
+    WireMockFixture wireMockFixture) :
+    IClassFixture<WebApplicationFactory<Users.Program>>,
+    IClassFixture<WireMockFixture>,
+    IAsyncLifetime
 {
     private HttpResponseMessage? _httpResponseMessage;
     private ProblemDetails? _response;
@@ -20,34 +22,25 @@ public class GetVehicleByUserReturnsStatus429TooManyRequestsResponse(WebApplicat
 
     public async Task InitializeAsync()
     {
-        var response = new GetVehiclesByMakeResponse()
-        {
-            Vehicles = [new() { Make = "Toyota", Model = "Corolla" }]
-        };
-
-        var server = classFixture.server;
-        server.Reset();
-        server
-            .Given(WireMock.RequestBuilders.Request.Create()
-            .WithPath("/api/Vehicles/GetVehiclesByMake")
-            .UsingPost())
+        wireMockFixture.Server
+            .Given(Request.Create()
+                .WithPath("/api/Vehicles/GetVehiclesByMake")
+                .UsingPost())
             .RespondWith(Response.Create()
-            .WithStatusCode(200)
-            .WithHeader("Content-Type", "application/x-protobuf")
-            .WithBody(ProtobufHelper.SerialiseToProtobuf(response)));
+                .WithStatusCode(200));
 
-        Assert.True(classFixture.server.IsStarted);
+        var requestBody = new GetAvailableVehiclesRequest { Name = "Bob" };
+        var request = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        const string endpoint = "/Users";
 
-        var client = factory.CreateClient();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        var client = wireMockFixture.CreateClient(factory);
+        await client.PostAsync(endpoint, request, CancellationToken.None);
+        await client.PostAsync(endpoint, request, CancellationToken.None);
+        await client.PostAsync(endpoint, request, CancellationToken.None);
+        _httpResponseMessage = await client.PostAsync(endpoint, request, CancellationToken.None);
 
-        var request = new GetAvailableVehiclesRequest() { Name = "Bob" };
-        await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
-        await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
-        await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
-        _httpResponseMessage = await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
-        var responseMessageContent = await _httpResponseMessage.Content.ReadAsStringAsync();
-        _response = JsonSerializer.Deserialize<ProblemDetails>(responseMessageContent, _caseInsensitiveDeserializationOptions);
+        var responseContent = await _httpResponseMessage.Content.ReadAsStringAsync();
+        _response = JsonSerializer.Deserialize<ProblemDetails>(responseContent, _caseInsensitiveDeserializationOptions);
     }
 
     public Task DisposeAsync() => Task.CompletedTask;

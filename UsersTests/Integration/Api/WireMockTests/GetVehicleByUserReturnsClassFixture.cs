@@ -1,33 +1,37 @@
-﻿using WireMock.Server;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Users.Services.Vehicles;
+using WireMock.Server;
 using WireMock.Settings;
 
+namespace UsersTests.Integration.Api.WireMockTests;
 
-namespace UsersTests.Integration.Api.WireMockTests
+public class WireMockFixture : IDisposable
 {
-    public class GetVehicleByUserReturnsClassFixture : IDisposable
-    {
-        public WireMockServer server;
+    public WireMockServer Server { get; }
+    public string BaseUrl => Server.Urls[0];
 
-        public GetVehicleByUserReturnsClassFixture()
-        {
-            server = WireMockServer.Start(new WireMockServerSettings
-            {
-                Port = 7264,
-                UseSSL = true
-            });
-        }
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-            server.Stop();
-        }
+    public WireMockFixture()
+    {
+        Server = WireMockServer.Start(new WireMockServerSettings { Port = 0 });
     }
 
-    /*
-        Needs this to point at the class that can't be run in parallel.
-        This was a problem because the prod code had to point to a specific resource / port and I wanted tests to get different responses
-        to the same request so they couldn't be running at the same time or responses would conflict.
-    */
-    [CollectionDefinition("WireMock Collection", DisableParallelization = true)]
-    public class WireMockCollection : ICollectionFixture<GetVehicleByUserReturnsClassFixture> { }
+    public HttpClient CreateClient<TProgram>(WebApplicationFactory<TProgram> factory) where TProgram : class
+    {
+        return factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureServices(services =>
+            {
+                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IVehiclesService));
+                if (descriptor != null) services.Remove(descriptor);
+
+                services.AddHttpClient<IVehiclesService, VehiclesService>(c =>
+                {
+                    c.BaseAddress = new Uri(BaseUrl);
+                });
+            });
+        }).CreateClient();
+    }
+
+    public void Dispose() => Server.Stop();
 }

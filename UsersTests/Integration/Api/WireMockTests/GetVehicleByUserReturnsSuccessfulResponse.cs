@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Users.Services;
@@ -10,37 +9,40 @@ using WireMock.ResponseBuilders;
 
 namespace UsersTests.Integration.Api.WireMockTests;
 
-[Collection("WireMock Tests")]
-public class GetVehicleByUserReturnsSuccessfulResponse(WebApplicationFactory<Users.Program> factory, GetVehicleByUserReturnsClassFixture classFixture) : IClassFixture<WebApplicationFactory<Users.Program>>, IClassFixture<GetVehicleByUserReturnsClassFixture>, IAsyncLifetime
+public class GetVehicleByUserReturnsSuccessfulResponse(
+    WebApplicationFactory<Users.Program> factory,
+    WireMockFixture wireMockFixture) :
+    IClassFixture<WebApplicationFactory<Users.Program>>,
+    IClassFixture<WireMockFixture>,
+    IAsyncLifetime
 {
     private HttpResponseMessage? _httpResponseMessage;
     private string? _response;
 
     public async Task InitializeAsync()
     {
-        var response = new GetVehiclesByMakeResponse()
+        var vehiclesResponse = new GetVehiclesByMakeResponse()
         {
-            Vehicles = [new() { Make = "Toyota", Model = "Corolla" }]
+            Vehicles = [new Vehicle { Make = "Toyota", Model = "Corolla" }]
         };
 
-        var server = classFixture.server;
-        server.Reset();
-        server
+        wireMockFixture.Server
             .Given(WireMock.RequestBuilders.Request.Create()
-            .WithPath("/api/Vehicles/GetVehiclesByMake")
-            .UsingPost())
+                .WithPath("/api/Vehicles/GetVehiclesByMake")
+                .UsingPost())
             .RespondWith(Response.Create()
-            .WithStatusCode(200)
-            .WithHeader("Content-Type", "application/x-protobuf")
-            .WithBody(ProtobufHelper.SerialiseToProtobuf(response)));
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/x-protobuf")
+                .WithBody(ProtobufHelper.SerialiseToProtobuf(vehiclesResponse)));
 
-        Assert.True(classFixture.server.IsStarted);
+        var requestBody = new GetAvailableVehiclesRequest { Name = "Bob" };
+        var request = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        const string endpoint = "/Users";
 
-        var client = factory.CreateClient();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        _httpResponseMessage = await wireMockFixture
+            .CreateClient(factory)
+            .PostAsync(endpoint, request, CancellationToken.None);
 
-        var request = new GetAvailableVehiclesRequest() { Name = "Bob" };
-        _httpResponseMessage = await client.PostAsync("/Users", new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"), CancellationToken.None);
         _response = await _httpResponseMessage.Content.ReadAsStringAsync();
     }
 
@@ -53,5 +55,5 @@ public class GetVehicleByUserReturnsSuccessfulResponse(WebApplicationFactory<Use
     public void ReturnsResult() => Assert.NotNull(_response);
 
     [Fact]
-    public void ReturnsResultContainingRequestedName() => Assert.Contains("Bob", _response);
+    public void ReturnsResultContainingRequestedName() => Assert.Contains("Bob drives a Toyota Corolla", _response);
 }
