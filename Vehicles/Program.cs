@@ -21,13 +21,16 @@ public class Program
         builder.Services.AddSingleton<INHibernateDatabase, NHibernateDatabase>(x => new NHibernateDatabase(x.GetRequiredService<IOptions<DatabaseConfig>>(), Assembly.GetExecutingAssembly()));
 
         var app = builder.Build();
-        app.UseHttpsRedirection();
 
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(x => x.EnableTryItOutByDefault());
+        }
+        else
+        {
+            app.UseHttpsRedirection();
         }
 
         app.UseAuthorization();

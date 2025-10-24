@@ -20,13 +20,16 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseHttpsRedirection();
         app.UseCorsPolicies();
 
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseScalar();
+        }
+        else
+        {
+            app.UseHttpsRedirection();
         }
 
         app.UseAuthorization();
