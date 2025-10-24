@@ -25,7 +25,7 @@ The code is not intended to be production-ready, each concept is usually impleme
   - Use `Angular Signals` for better change detection.
 - Use `Cors` to allow a request through from the UI.
 - Use a mock `HttpClient` message handler.
-
+- Use Ocelot to route access to the APIs through an anti corruption layer (ACL). 
 - Testing
   - Use integration tests
     - Use `WebApplicationFactory` to call the service endpoints
@@ -65,7 +65,6 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Add SOAP requests
 - Add message broker communications
 - Add a `Blazor` UI
-- Add an anti-corruption layer
 - Add Selenium tests
 - Add Hurl tests
 - Add CDC contract tests
@@ -91,6 +90,7 @@ The code is not intended to be production-ready, each concept is usually impleme
 - Add load tests
   - K6 in the UI
   - NBomber in the backend.
+- Add the more realistic certification for the ACL and check dummy JWT
 ---
 
 # **Prerequisites**
