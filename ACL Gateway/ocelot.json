@@ -2,7 +2,7 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/vehicles",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
       "DownstreamPathTemplate": "/api/Vehicles/GetVehicles",
       "DownstreamHostAndPorts": [
         {
@@ -14,7 +14,7 @@
     },
     {
       "UpstreamPathTemplate": "/users",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
       "DownstreamPathTemplate": "/Users",
       "DownstreamHostAndPorts": [
         {

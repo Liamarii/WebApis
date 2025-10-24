@@ -12,6 +12,6 @@ export class UsersService {
 
   getVehicleByUser(username : string): Observable<UsersResponse> {
     const body = { name: username };
-    return this.http.post<UsersResponse>('https://localhost:7146/Users', body);
+    return this.http.post<UsersResponse>('http://localhost:5001/users', body);
   }
 }

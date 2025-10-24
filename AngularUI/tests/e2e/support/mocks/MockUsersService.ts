@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 
-const serviceUrl = 'https://localhost:7146/Users';
+const serviceUrl = 'http://localhost:5001/users';
 
 export class mockUsersService {
 
