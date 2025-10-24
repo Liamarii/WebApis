@@ -30,6 +30,7 @@ The code is not intended to be production-ready, each concept is usually impleme
   - Use integration tests
     - Use `WebApplicationFactory` to call the service endpoints
     - Use `WebApplicationFactory` with a way to swap out the real database for a test one.
+    - Use test parallelism
   - Use `Reqnroll` BDD tests
     - Use `Before & After Scenarios`
     - Use `Scenario Contexts`
