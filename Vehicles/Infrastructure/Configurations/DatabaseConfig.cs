@@ -1,7 +1,6 @@
-﻿namespace Vehicles.Infrastructure.Configurations
+﻿namespace Vehicles.Infrastructure.Configurations;
+
+public class DatabaseConfig
 {
-    public class DatabaseConfig
-    {
-        public string DefaultConnection { get; set; } = string.Empty;
-    }
+    public string DefaultConnection { get; set; } = string.Empty;
 }

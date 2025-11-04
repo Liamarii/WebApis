@@ -5,79 +5,78 @@ using Users.Infrastructure;
 using Users.Services.Users;
 using Users.Services.Vehicles;
 
-namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests
+namespace UsersTests.Integration.Api.MockHttpMessageHandlerTests;
+
+public class TestHelper
 {
-    public class TestHelper
+    private MockHttpMessageHandler? _mockHttpMessageHandler;
+    private HttpClient? _httpClient;
+    public TestHelper CreateHttpClient()
     {
-        private MockHttpMessageHandler? _mockHttpMessageHandler;
-        private HttpClient? _httpClient;
-        public TestHelper CreateHttpClient()
+        if (_mockHttpMessageHandler == null)
         {
-            if (_mockHttpMessageHandler == null)
+            throw new InvalidOperationException($"You need to setup the handler first with {nameof(CreateMockHttpMessageHandler)}");
+        }
+
+        _httpClient = new HttpClient(_mockHttpMessageHandler)
+        {
+            BaseAddress = new Uri("http://localhost:5289")
+        };
+
+        return this;
+    }
+
+    public TestHelper CreateMockHttpMessageHandler(string response, HttpStatusCode httpStatusCode, Exception exception)
+    {
+        _mockHttpMessageHandler = new MockHttpMessageHandler(response, httpStatusCode)
+        {
+            ThrownException = exception
+        };
+        return this;
+    }
+
+    public UsersService CreateUsersService()
+    {
+        if (_httpClient == null)
+        {
+            throw new InvalidOperationException($"You need to setup the http client first with {nameof(CreateHttpClient)}");
+        }
+
+        var resiliencePipelineProvider = Substitute.For<ResiliencePipelineProvider<string>>();
+        resiliencePipelineProvider
+            .GetPipeline<HttpResponseMessage>("defaultPipeline")
+            .Returns(ResiliencePipelineProvider.GetDefaultPipeline());
+
+        var vehicleService = new VehiclesService(_httpClient, resiliencePipelineProvider);
+        return new UsersService(vehicleService);
+    }
+
+    private class MockHttpMessageHandler(string response, HttpStatusCode statusCode) : HttpMessageHandler
+    {
+        private readonly string _response = response;
+        private readonly HttpStatusCode _statusCode = statusCode;
+
+        public string? Input { get; private set; }
+        public int NumberOfCalls { get; private set; }
+        public Exception? ThrownException { get; set; }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            if (ThrownException != null)
             {
-                throw new InvalidOperationException($"You need to setup the handler first with {nameof(CreateMockHttpMessageHandler)}");
+                throw ThrownException;
             }
 
-            _httpClient = new HttpClient(_mockHttpMessageHandler)
+            NumberOfCalls++;
+            if (request.Content != null)
             {
-                BaseAddress = new Uri("http://localhost:5289")
+                Input = await request.Content.ReadAsStringAsync(cancellationToken);
+            }
+            return new HttpResponseMessage
+            {
+                StatusCode = _statusCode,
+                Content = new StringContent(_response)
             };
-
-            return this;
-        }
-
-        public TestHelper CreateMockHttpMessageHandler(string response, HttpStatusCode httpStatusCode, Exception exception)
-        {
-            _mockHttpMessageHandler = new MockHttpMessageHandler(response, httpStatusCode)
-            {
-                ThrownException = exception
-            };
-            return this;
-        }
-
-        public UsersService CreateUsersService()
-        {
-            if (_httpClient == null)
-            {
-                throw new InvalidOperationException($"You need to setup the http client first with {nameof(CreateHttpClient)}");
-            }
-
-            var resiliencePipelineProvider = Substitute.For<ResiliencePipelineProvider<string>>();
-            resiliencePipelineProvider
-                .GetPipeline<HttpResponseMessage>("defaultPipeline")
-                .Returns(ResiliencePipelineProvider.GetDefaultPipeline());
-
-            var vehicleService = new VehiclesService(_httpClient, resiliencePipelineProvider);
-            return new UsersService(vehicleService);
-        }
-
-        private class MockHttpMessageHandler(string response, HttpStatusCode statusCode) : HttpMessageHandler
-        {
-            private readonly string _response = response;
-            private readonly HttpStatusCode _statusCode = statusCode;
-
-            public string? Input { get; private set; }
-            public int NumberOfCalls { get; private set; }
-            public Exception? ThrownException { get; set; }
-
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                if (ThrownException != null)
-                {
-                    throw ThrownException;
-                }
-
-                NumberOfCalls++;
-                if (request.Content != null)
-                {
-                    Input = await request.Content.ReadAsStringAsync(cancellationToken);
-                }
-                return new HttpResponseMessage
-                {
-                    StatusCode = _statusCode,
-                    Content = new StringContent(_response)
-                };
-            }
         }
     }
 }

@@ -9,9 +9,9 @@ namespace VehiclesTests.Integration.Infrastructure;
 
 public class WebApplicationFactoryWithFakeDatabase<TStartClass> : WebApplicationFactory<TStartClass>, IAsyncDisposable where TStartClass : class
 {
-    private static PostgreSqlContainer? _container;
-    private static bool _containerStarted;
-    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+    private PostgreSqlContainer? _container;
+    private bool _containerStarted;
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
 
     public WebApplicationFactoryWithFakeDatabase()
     {
@@ -72,7 +72,7 @@ public class WebApplicationFactoryWithFakeDatabase<TStartClass> : WebApplication
         return CreateClient();
     }
 
-    private static async Task RunDatabaseQueryAsync(params string[] sqlQueries)
+    private async Task RunDatabaseQueryAsync(params string[] sqlQueries)
     {
         if (_container == null) throw new InvalidOperationException("Container is not running.");
 

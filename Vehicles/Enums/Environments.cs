@@ -1,9 +1,8 @@
-﻿namespace Vehicles.Enums
+﻿namespace Vehicles.Enums;
+
+public enum EnvironmentTypes
 {
-    public enum EnvironmentTypes
-    {
-        Development,
-        Testing,
-        Production
-    }
+    Development,
+    Testing,
+    Production
 }
